@@ -25,35 +25,9 @@ public class Main {
             Player p1 = new Player(b, s);
             Player p2 = new Player(b, s);
             Game g = new Game(p1, p2);
-            Game.startTurnClock();
-            g.makeTurn(1, 5, 3);
-            g.endTurnClock(1);
-            System.out.println(g.makeTurn(0, 0, 1));
-            System.out.println(g.getNumberOfHits(0));
-
-            System.out.println(g.makeTurn(0, 1, 1));
-            System.out.println(g.getNumberOfHits(0));
-
-            System.out.println(g.makeTurn(0, 2, 1));
-            System.out.println(g.getNumberOfHits(0));
-            Game.startTurnClock();
-            Scanner keyboard = new Scanner(System.in);
-            System.out.println("enter an integer");
-            int n = keyboard.nextInt();
-            g.putMine(1, 5, n);
-            g.endTurnClock(1);
-            System.out.println(g.makeTurn(1, 3, 3));
-            System.out.println(g.getNumberOfHits(0));
-            System.out.print("time:");
-            System.out.println(g.getAvgTime(1));
-            System.out.print("time:start");
-            long[] a = g.GetTimePass();
-            System.out.print(a[0]);
-            System.out.print(":");
-            System.out.println(a[1]);
-            System.out.println(g.isGameFinished(0));
-        } catch (Exception ex) {
-            System.out.println("out of bounds mannnn");
+            g.putMine(0,6,1);
+        } catch (GameException ex) {
+            System.out.println(ex.getMsg());
         }
     }
 }

@@ -1,8 +1,7 @@
-
 public class Game {
     private long startGameTime = 0;
     private Player[] players;
-    private static long startTurnTime = 0;
+    private long startTurnTime = 0;
 
     public Game(Player player1, Player player2) {
         this.startGameTime = java.time.Instant.now().getEpochSecond();
@@ -11,8 +10,9 @@ public class Game {
         this.players[1] = player2;
     }
 
-    public static void startTurnClock(){
-        startTurnTime =  java.time.Instant.now().getEpochSecond();
+    public void startTurnClock(int numOfPlayer) {
+        startTurnTime = java.time.Instant.now().getEpochSecond();
+        players[numOfPlayer].incTurn();
     }
 
     public void endTurnClock(int numOfPlayer){
@@ -20,31 +20,36 @@ public class Game {
         players[numOfPlayer].setAvgTimeOfTurn(end-startTurnTime);
     }
 
-    public int makeTurn(int numOfPlayer, int x, int y)
+    public int makeTurn(int numOfPlayer, int x, int y) throws Exception
     {
-        int res;
-        players[numOfPlayer].incTurn();
-        if(players[numOfPlayer].isAlreadyChecked(x,y)) {
-            res = -1;
+        try {
+            int res;
+            if (players[numOfPlayer].isAlreadyChecked(x, y)) {
+                res = -1;
+            } else {
+                res = players[1 - numOfPlayer].checkHit(x, y);
+            }
+            if (res >= 1) {
+                players[numOfPlayer].incHit(x, y);
+            } else if (res == 0) {
+                players[numOfPlayer].incMiss(x, y);
+            }
+            return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
         }
-        else {
-            res = players[1 - numOfPlayer].checkHit(x, y);
+        catch (Exception ex) {
+            throw ex;
         }
-        if(res >= 1){
-            players[numOfPlayer].incHit(x,y);
-        }
-        else if(res == 0) {
-            players[numOfPlayer].incMiss(x, y);
-        }
-        return  res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
-    public int putMine(int numOfPlayer, int x, int y) {
-        players[numOfPlayer].incTurn();
+    public int putMine(int numOfPlayer, int x, int y) throws GameException{
         if (players[numOfPlayer].isMinesLeft()) {
-            if (players[numOfPlayer].isValidPlaceForMine(x, y))
-                return 1; // valid place + mines left
-            return 2; // mines left + is not valid place
+            try {
+                if (players[numOfPlayer].isValidPlaceForMine(x, y))
+                    return 1; // valid place + mines left
+                return 2; // mines left + is not valid place
+            } catch (GameException ex) {
+                throw ex;
+            }
         }
         return 0; // there are no mines left
     }
