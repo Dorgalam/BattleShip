@@ -1,9 +1,11 @@
+import java.util.ArrayList;
+
 public class Board {
     public static final int EMPTY_CELL = -1;
     public static final int MINE = -2;
     public static final int HIT = -3;
     public static final int MISS = -4;
-    private static final int ROW = 0;
+    public static final int ROW = 0;
     private int[][] matrix;
     private int matrixSize;
 
@@ -23,20 +25,20 @@ public class Board {
         }
     }
 
-    public Board(int size , int[] x , int[] y , int[] shipLen , int[] direction) throws GameException { //my board
+    public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
-        for (int i = 0; i < x.length; i++) {
-            for (int j = 0; j < shipLen[ i ]; j++) {
+        int[] x = new int[5];
+        int[] y = new int[5];
+        for (int i = 0; i < ships.length; i++) {
+            x = ships[i].getxArray();
+            y = ships[i].getyArray();
+            for (int j = 0; j < ships[i].getCount(); j++) {
                 try {
-                    matrix[ x[ i ] ][ y[ i ] ] = i;
-                    if (direction[ i ] == ROW)
-                        y[ i ]++;
-                    else
-                        x[ i ]++;
+                    matrix[x[j]][y[j]] = i;
                 } catch (Exception exc) {// out of range exception
                     GameException ex = new GameException(exc.getMessage());
                     ex.setMsg(String.format("This Board isn't valid, you tried to put a ship in a place(%d,%d) that doesn't exist" +
-                            " in the board with squares between (1,1) to(%d,%d)", x[ i ] + 1, y[ i ] + 1, matrixSize, matrixSize));
+                            " in the board with squares between (1,1) to(%d,%d)", x[i] + 1, y[j] + 1, matrixSize, matrixSize));
                     throw ex;
                 }
             }
@@ -87,7 +89,7 @@ public class Board {
 
     public boolean isValidPlace(int x , int y, int validType) throws GameException {
         try {
-            if (matrix[ x ][ y ] != EMPTY_CELL)
+            if (matrix[x][y] != EMPTY_CELL && matrix[x][y] != validType)
                 return false;
         } catch (Exception exc) {// out of range exception
             GameException ex = new GameException(exc.getMessage());
@@ -97,8 +99,8 @@ public class Board {
         }
         for (int i = x - 1; i < x + 1; i++) {
             for (int j = y - 1; j < y + 1; j++) {
-                if (!(i < 0 || i > matrixSize || j < 0 || j > matrixSize)) {
-                    if (matrix[ i ][ j ] != validType && matrix[ i ][ j ] != EMPTY_CELL) {
+                if (!(i < 0 || i >= matrixSize || j < 0 || j >= matrixSize)) {
+                    if (matrix[i][j] != validType && matrix[i][j] != EMPTY_CELL) {
                         return false;
                     }
                 }
