@@ -1,4 +1,4 @@
-package com.battleship.Logic;
+//package com.battleship.Logic;
 
 public class GameException extends Exception {
     private String msg;
@@ -11,7 +11,8 @@ public class GameException extends Exception {
         this.msg = msg;
     }
 
-    public String getMsg() {
+    @Override
+    public String getMessage() {
         return msg;
     }
 

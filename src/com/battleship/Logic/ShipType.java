@@ -1,25 +1,20 @@
 package com.battleship.Logic;
 
 class ShipType {
-
     private int length;
     private int score;
     private int amount;
-    private String shipType;
     private String category;
+    private Ship shipArr[];
 
     ShipType(int length, int score, int amount, String category) {
         this.length = length;
         this.score = score;
         this.category = category;
         this.amount = amount;
+        this.shipArr = new Ship[amount];
     }
 
-    public Ship[] getShipArr() {
-        return shipArr;
-    }
-
-    private Ship shipArr[];
     int getLength() {
         return length;
     }
@@ -53,6 +48,7 @@ class ShipType {
         this.category = category;
     }
 
-
-
+    public Ship[] getShipArr() {
+        return shipArr;
+    }
 }

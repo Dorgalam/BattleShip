@@ -27,16 +27,16 @@ public class Board {
 
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
-        Point p[];
+        Point[] pArray = new Point[ships.length];
         for (int i = 0; i < ships.length; i++) {
-            p = ships[i].getLoc();
+            pArray = ships[i].getLocation();
             for (int j = 0; j < ships[i].getCount(); j++) {
                 try {
-                    matrix[p[j].getX()][p[j].getY()] = i;
+                    matrix[pArray[j].getX()][pArray[j].getY()] = i;
                 } catch (Exception exc) {// out of range exception
                     GameException ex = new GameException(exc.getMessage());
                     ex.setMsg(String.format("This Board isn't valid, you tried to put a ship in a place(%d,%d) that doesn't exist" +
-                            " in the board with squares between (1,1) to(%d,%d)", p[i].getX() + 1, p[j].getY() + 1, matrixSize, matrixSize));
+                            " in the board with squares between (1,1) to(%d,%d)", pArray[j].getX() + 1, pArray[j].getY() + 1, matrixSize, matrixSize));
                     throw ex;
                 }
             }
@@ -47,22 +47,22 @@ public class Board {
         return matrixSize;
     }
 
-    public boolean isHit(int x, int y) throws Exception {
+    public boolean isHit(Point p) throws Exception {
         try {
-            if (matrix[ x ][ y ] >= 0 || matrix[ x ][ y ] == MINE) {
+            if (matrix[p.getX()][p.getY()] >= 0 || matrix[p.getX()][p.getY()] == MINE) {
                 return true;
             }
             return false;
         } catch (Exception exc) {// out of range exception
             GameException ex = new GameException(exc.getMessage());
-            ex.setMsg(String.format("you tried to attack in a place (%d,%d) that doesn't exist in the board," +
-                    "valid input is between (1,1) to (%d,%d)", x + 1, y + 1, matrixSize,matrixSize),x+1,y+1);
+            ex.setMsg(String.format("you tried to attack in a place (%d,%d) that doesn't exist in the board, valid input is between" +
+                    " (1,1) to (%d,%d)", p.getX() + 1, p.getY() + 1, matrixSize,matrixSize),p.getX()+1,p.getY()+1);
             throw ex;
         }
     }
 
-    public int getSquare(int x,int y) {
-        return matrix[x][y];
+    public int getSquare(Point p) {
+        return matrix[p.getX()][p.getY()];
     }
 
     public boolean isValidBoard(int shipsSquares) throws GameException {
@@ -72,7 +72,7 @@ public class Board {
                 for (int j = 0; j < matrixSize; j++) {
                     if (matrix[ i ][ j ] >= 0) { //is ship
                         countShipsSquares++;
-                        if (!isValidPlace(i, j, matrix[ i ][ j ])) // check if this ship doesn't collide with other ships
+                        if (!isValidPlace(new Point(i,j), matrix[ i ][ j ])) // check if this ship doesn't collide with other ships
                             return false;
                     }
                 }
@@ -85,7 +85,9 @@ public class Board {
         return countShipsSquares == shipsSquares;
     }
 
-    public boolean isValidPlace(int x , int y, int validType) throws GameException {
+    public boolean isValidPlace(Point p, int validType) throws GameException {
+        int x = p.getX();
+        int y = p.getY();
         try {
             if (matrix[x][y] != EMPTY_CELL && matrix[x][y] != validType)
                 return false;
@@ -107,16 +109,16 @@ public class Board {
         return true;
     }
 
-    public void addMine(int x , int y) {
-        matrix[x][y] = MINE;
+    public void addMine(Point p) {
+        matrix[p.getX()][p.getY()] = MINE;
     }
 
-    public void updateTheBoard(int x, int y , int n) {
-        matrix[x][y] = n;
+    public void updateTheBoard(Point p, int n) {
+        matrix[p.getX()][p.getY()] = n;
     }
 
-    public boolean alreadyChecked(int x, int y) {
-        if(matrix[x][y] == MISS || matrix[x][y] == HIT)
+    public boolean alreadyChecked(Point p) {
+        if(matrix[p.getX()][p.getY()] == MISS || matrix[p.getX()][p.getY()] == HIT)
             return true;
         return false;
     }

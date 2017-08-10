@@ -3,8 +3,8 @@ package com.battleship.Logic;
 class Ship {
     private int count;
     private int score;
-
     private Point[] loc;
+
     Ship(int length, int dir, int x, int y, int score) {
         this.score = score;
         this.count = length;
@@ -23,29 +23,24 @@ class Ship {
         }
     }
 
-    public Point[] getLoc() {
+    public Point[] getLocation() {
         return loc;
     }
-    public void setLoc(Point[] loc) {
+
+    public void setLocation(Point[] loc) {
         this.loc = loc;
     }
+
     public void setScore(int score) {
         this.score = score;
     }
-    public int getScore() {
 
-        return score;
-    }
-
-
-
+    public int getScore() { return score; }
 
     int getCount() {
         return count;
     }
 
-    void decCount() {
-        this.count--;
-    }
+    void decCount() { this.count--; }
 
 }

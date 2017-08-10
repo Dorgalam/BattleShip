@@ -2,32 +2,30 @@ package com.battleship.Logic;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
 class BattleShipParser {
     private Element dom;
+    private Ship[] ships;
     BattleShipParser(String xmlPath) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             this.dom = db.parse(new File(xmlPath)).getDocumentElement();
-            setShipTypesUtil();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    private void setShipTypesUtil() {
+    void setShipTypesUtil() {
         NodeList shipTypesList = dom.getElementsByTagName("shipType");
         int numTypes = shipTypesList.getLength();
-        Utils.typeMap = new HashMap<>();
+        ShipType shipTypeArr[] = new ShipType[numTypes];
         for (int i = 0; i < numTypes; ++i) {
             Element shipType = (Element)shipTypesList.item(i);
             String type = shipType.getAttributes().getNamedItem("id").getNodeValue();
@@ -49,16 +47,15 @@ class BattleShipParser {
         return getBoardShips(boardB);
     }
     private Ship[] getBoardShips(Element board) {
-        NodeList shipList = board.getElementsByTagName("ship");
+        NodeList shipList = dom.getElementsByTagName("ship");
         int numShips = shipList.getLength();
         Ship[] boardShips = new Ship[numShips];
         for (int i = 0; i < numShips; ++i) {
             Element ship = (Element)shipList.item(i);
             String type = Utils.getFirstChildText(ship, "shipTypeId");
             int x, y;
-            Element position = (Element) ship.getElementsByTagName("position").item(0);
-            x = Integer.parseInt(position.getAttributes().getNamedItem("x").getNodeValue());
-            y = Integer.parseInt(position.getAttributes().getNamedItem("y").getNodeValue());
+            x = Integer.parseInt(ship.getAttributes().getNamedItem("x").getNodeValue());
+            y = Integer.parseInt(ship.getAttributes().getNamedItem("y").getNodeValue());
             String direction = Utils.getFirstChildText(ship, "direction");
             boardShips[i] = new Ship(
                     Utils.typeMap.get(type).getLength(),
