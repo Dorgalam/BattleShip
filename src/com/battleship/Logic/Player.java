@@ -17,31 +17,42 @@ class Player {
     }
 
     boolean isValidPlaceForMine(int x, int y){
-
-        return !(myBoard.isValidPlace(x, y ,Board.EMPTY_CELL);
+        boolean res = false;
+        try {
+            res = !myBoard.isValidPlace(x, y ,Board.EMPTY_CELL);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return res;
 
     }
 
     int checkHit(int x, int y) {
-        if(myBoard.isHit(x, y)) {
-            if (myBoard.getSquare(x, y) != Board.MINE) {
-                myShips[myBoard.getSquare(x, y)].decCount();
-                if (myShips[myBoard.getSquare(x, y)].getCount() == 0) {
-                    int score = myShips[myBoard.getSquare(x, y)].getScore();
+        try {
+            if(myBoard.isHit(x, y)) {
+                if (myBoard.getSquare(x, y) != Board.MINE) {
+                    myShips[myBoard.getSquare(x, y)].decCount();
+                    if (myShips[myBoard.getSquare(x, y)].getCount() == 0) {
+                        int score = myShips[myBoard.getSquare(x, y)].getScore();
+                        myBoard.updateTheBoard(x,y,Board.HIT);
+                        return 2 + score;
+                    }
                     myBoard.updateTheBoard(x,y,Board.HIT);
-                    return 2 + score;
+                    return 1;
                 }
-                myBoard.updateTheBoard(x,y,Board.HIT);
-                return 1;
+                else {
+                    myBoard.updateTheBoard(x,y,Board.MISS);
+                    return -1; /* MINE HIT */
+                }
             }
             else {
-                myBoard.updateTheBoard(x,y,Board.MISS);
-                return -1; /* MINE HIT */
+                return 0;
             }
-        }
-        else{
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
             return 0;
         }
+
     }
 
     boolean allShipsDown(){
