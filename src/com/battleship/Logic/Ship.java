@@ -2,24 +2,6 @@ package com.battleship.Logic;
 
 class Ship {
     private int count;
-
-    public Point[] getLoc() {
-        return loc;
-    }
-
-    public void setLoc(Point[] loc) {
-        this.loc = loc;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getScore() {
-
-        return score;
-    }
-
     private int score;
 
     private Point[] loc;
@@ -40,6 +22,23 @@ class Ship {
                 break;
         }
     }
+
+    public Point[] getLoc() {
+        return loc;
+    }
+    public void setLoc(Point[] loc) {
+        this.loc = loc;
+    }
+    public void setScore(int score) {
+        this.score = score;
+    }
+    public int getScore() {
+
+        return score;
+    }
+
+
+
 
     int getCount() {
         return count;
