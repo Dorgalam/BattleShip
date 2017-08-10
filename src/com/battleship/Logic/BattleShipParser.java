@@ -12,7 +12,6 @@ import org.w3c.dom.NodeList;
 
 class BattleShipParser {
     private Element dom;
-    private Ship[] ships;
     BattleShipParser(String xmlPath) {
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -25,7 +24,6 @@ class BattleShipParser {
     void setShipTypesUtil() {
         NodeList shipTypesList = dom.getElementsByTagName("shipType");
         int numTypes = shipTypesList.getLength();
-        ShipType shipTypeArr[] = new ShipType[numTypes];
         for (int i = 0; i < numTypes; ++i) {
             Element shipType = (Element)shipTypesList.item(i);
             String type = shipType.getAttributes().getNamedItem("id").getNodeValue();

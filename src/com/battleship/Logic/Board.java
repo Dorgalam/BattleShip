@@ -27,18 +27,16 @@ public class Board {
 
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
-        int[] x = new int[5];
-        int[] y = new int[5];
+        Point p[];
         for (int i = 0; i < ships.length; i++) {
-            x = ships[i].getxArray();
-            y = ships[i].getyArray();
+            p = ships[i].getLoc();
             for (int j = 0; j < ships[i].getCount(); j++) {
                 try {
-                    matrix[x[j]][y[j]] = i;
+                    matrix[p[j].getX()][p[j].getY()] = i;
                 } catch (Exception exc) {// out of range exception
                     GameException ex = new GameException(exc.getMessage());
                     ex.setMsg(String.format("This Board isn't valid, you tried to put a ship in a place(%d,%d) that doesn't exist" +
-                            " in the board with squares between (1,1) to(%d,%d)", x[i] + 1, y[j] + 1, matrixSize, matrixSize));
+                            " in the board with squares between (1,1) to(%d,%d)", p[i].getX() + 1, p[j].getY() + 1, matrixSize, matrixSize));
                     throw ex;
                 }
             }

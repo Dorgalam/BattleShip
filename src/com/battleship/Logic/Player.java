@@ -17,12 +17,9 @@ class Player {
     }
 
     boolean isValidPlaceForMine(int x, int y){
-        if (!myBoard.isValidPlace(x, y ,Board.EMPTY_CELL)) {
-            return false;
-        }
-        myBoard.addMine(x, y);
-        minesLeft--;
-        return true;
+
+        return !(myBoard.isValidPlace(x, y ,Board.EMPTY_CELL);
+
     }
 
     int checkHit(int x, int y) {
@@ -30,7 +27,7 @@ class Player {
             if (myBoard.getSquare(x, y) != Board.MINE) {
                 myShips[myBoard.getSquare(x, y)].decCount();
                 if (myShips[myBoard.getSquare(x, y)].getCount() == 0) {
-                    int score = myShips[myBoard.getSquare(x, y)].getPoints();
+                    int score = myShips[myBoard.getSquare(x, y)].getScore();
                     myBoard.updateTheBoard(x,y,Board.HIT);
                     return 2 + score;
                 }
