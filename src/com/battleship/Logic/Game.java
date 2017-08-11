@@ -5,7 +5,18 @@ public class Game {
     private Player[] players;
     private long startTurnTime = 0;
 
+    public Game(String xmlPath) throws GameException {
+        this.startGameTime = java.time.Instant.now().getEpochSecond();
+        this.players = new Player[2];
+        BattleShipParser parser = new BattleShipParser(xmlPath);
+        int boardSize = parser.getBoardSize();
+        this.players[0] = new Player(boardSize, parser.getBoardAShips());
+        this.players[1] = new Player(boardSize, parser.getBoardBShips());
+
+    }
+
     public Game(Player player1, Player player2) {
+
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];
         this.players[0] = player1;

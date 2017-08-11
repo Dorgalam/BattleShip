@@ -4,24 +4,29 @@ import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
 class BattleShipParser {
     private Element dom;
-    BattleShipParser(String xmlPath) {
+    BattleShipParser(String xmlPath) throws GameException {
         try {
+            isSchemaValid(xmlPath);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             this.dom = db.parse(new File(xmlPath)).getDocumentElement();
             setShipTypesUtil();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            throw new GameException("XML is invalid!");
         }
     }
     private void setShipTypesUtil() {
@@ -73,6 +78,16 @@ class BattleShipParser {
     }
     String getGameType() {
         return Utils.getFirstChildText(dom, "GameType");
+    }
+    private void isSchemaValid(String xmlPath) throws GameException{
+        try {
+            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(new File("src/resources/BattleShipGame.xsd"));
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(new File(xmlPath)));
+        } catch (Exception e) {
+            throw new GameException("Error: XML does not fit requirements");
+        }
     }
 
 }

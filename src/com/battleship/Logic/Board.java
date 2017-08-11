@@ -28,6 +28,7 @@ public class Board {
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
         Point[] pArray = new Point[ships.length];
+        matrix = new int[size][size];
         for (int i = 0; i < ships.length; i++) {
             pArray = ships[i].getLocation();
             for (int j = 0; j < ships[i].getCount(); j++) {

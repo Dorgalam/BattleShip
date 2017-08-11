@@ -1,21 +1,14 @@
-package com.battleship.Logic;
+package com.battleship;
 
-import java.util.ArrayList;
+import com.battleship.ConsoleUI.ConsoleUI;
 
 public class Main {
-    public ArrayList<Object> Data1 = new ArrayList();
-    public int depth = 0;
-    private String[] NODE_TYPES = {
-            "", "ELEMENT", "ATTRIBUTE", "TEXT", "CDATA",
-            "ENTITY_REF", "ENTITY", "PROCESSING_INST",
-            "COMMENT", "DOCUMENT", "DOCUMENT_TYPE",
-            "DOCUMENT_FRAG", "NOTATION"};
-
-    public static void main(String[] args) throws Exception {
-        try {
-            BattleShipParser parser = new BattleShipParser("src/resources/battleShip_5_basic.xml");
-            System.out.println(parser.getBoardSize());
-            /*int[] x = {0, 3, 0};
+    public static void main( final String[] args ) {
+        new ConsoleUI().startGame();
+    }
+}
+/*
+int[] x = {0, 3, 0};
             int[] y = {1, 3, 5};
             int[] len = {3, 1, 5};
             int[] dir = {1, 0, 1};
@@ -55,11 +48,5 @@ public class Main {
             System.out.print(a[0]);
             System.out.print(":");
             System.out.println(a[1]);
-            System.out.println(g.isGameFinished(0));*/
-        } catch (Exception ex) {
-            System.out.println("out of bounds mannnn");
-        }
-    }
-}
-
-
+            System.out.println(g.isGameFinished(0));
+*/

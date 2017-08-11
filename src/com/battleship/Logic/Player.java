@@ -16,7 +16,17 @@ public class Player {
         this.myShips = myShips;
     }
 
-    public boolean isValidPlaceForMine(Point point)throws GameException {
+    Player(int boardSize, Ship[] myShips) {
+        try {
+            this.myBoard = new Board(boardSize, myShips);
+            this.tryingBoard = new Board(boardSize);
+            this.myShips = myShips;
+        } catch (Exception e) {
+            System.out.println("Board details are invalid, please try another XML");
+        }
+    }
+
+    boolean isValidPlaceForMine(Point point)throws GameException {
         try {
             if (!myBoard.isValidPlace(point, Board.EMPTY_CELL)) {
                 return false;
@@ -31,7 +41,7 @@ public class Player {
         return true;
     }
 
-    public int checkHit(Point point) throws Exception{
+    int checkHit(Point point) throws Exception{
         try {
             if (myBoard.isHit(point)) {
                 if (myBoard.getSquare(point) != Board.MINE) {
@@ -64,19 +74,19 @@ public class Player {
         return true;
     }
 
-    public int getNumberOfTurns() {
+    int getNumberOfTurns() {
         return numberOfTurns;
     }
 
-    public void incTurn() {
+    void incTurn() {
         this.numberOfTurns++;
     }
 
-    public int getHits() {
+    int getHits() {
         return hits;
     }
 
-    public boolean isAlreadyChecked(Point point) throws Exception {
+    boolean isAlreadyChecked(Point point) throws Exception {
         try {
             if (tryingBoard.alreadyChecked(point))
                 return true;
@@ -86,29 +96,29 @@ public class Player {
         }
     }
 
-    public void incHit(Point point) {
+    void incHit(Point point) {
         tryingBoard.updateTheBoard(point,Board.HIT);
         this.hits++;
     }
 
-    public int getMisses() {
+    int getMisses() {
         return misses;
     }
 
-    public void incMiss(Point point) {
+    void incMiss(Point point) {
         tryingBoard.updateTheBoard(point,Board.MISS);
         this.misses++;
     }
 
-    public double getAvgTimeOfTurn() {
+    double getAvgTimeOfTurn() {
         return avgTimeOfTurn;
     }
 
-    public void setAvgTimeOfTurn(long timeOfTurn) {
+    void setAvgTimeOfTurn(long timeOfTurn) {
         this.avgTimeOfTurn = (this.avgTimeOfTurn*(numberOfTurns-1) + timeOfTurn) / numberOfTurns;
     }
 
-    public boolean isMinesLeft() {
+     boolean isMinesLeft() {
         return minesLeft > 0;
     }
 }

@@ -17,21 +17,6 @@ import org.xml.sax.SAXException;
 class Utils {
     private Utils(){}
     static Map<String, ShipType> typeMap;
-    static boolean isSchemaValid(String xmlPath){
-        try {
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new File("src/resources/BattleShipGame.xsd"));
-            Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(new File(xmlPath)));
-        } catch (IOException e){
-            System.out.println("Exception: "+e.getMessage());
-            return false;
-        }catch(SAXException e1){
-            System.out.println("SAX Exception: "+e1.getMessage());
-            return false;
-        }
-        return true;
-    }
     static String getFirstChildText(Element item, String tagName) {
         return item.getElementsByTagName(tagName).item(0).getTextContent();
     }

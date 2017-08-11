@@ -1,4 +1,4 @@
-//package com.battleship.Logic;
+package com.battleship.Logic;
 
 public class GameException extends Exception {
     private String msg;
