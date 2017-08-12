@@ -9,6 +9,7 @@ public class ConsoleUI {
     private Game gameLogic = null;
     private boolean gameStarted = false;
     private int playerNum = -1;
+    private int boardSize;
     private Scanner reader = new Scanner(System.in);
     public void start() {
         System.out.println("Welcome to Lior and Dor's awesome BattleShip game!!");
@@ -31,14 +32,13 @@ public class ConsoleUI {
     private void startGame() {
         gameStarted = gameLogic != null;
         playerNum = gameLogic.getNumOfPlayer();
+        this.boardSize = gameLogic.getBoardSize();
     }
     private void showGameStatus() {
-
     }
     private void makeAMove() {
-        System.out.println("Please write your next attack coordinates");
-        System.out.println("Row: (A-Z)");
-        reader.next();
+
+
         playerNum = gameLogic.getNumOfPlayer();
 
     }
@@ -78,8 +78,8 @@ public class ConsoleUI {
         boolean xmlEntered = false;
         while (!xmlEntered) {
             try {
-                System.out.println("Please write down your XML's location so we can begin (c:/DIR/DIR/data.xml)");
-                 //src/resources/battleShip_5_basic.xml
+                System.out.println("Please write down your XML's location so we can begin (c:\\DIR\\DIR\\data.xml)");
+                 // src/resources/battleShip_5_basic.xml
                 gameLogic = new Game(reader.next());
                 System.out.println("Success!");
                 xmlEntered = true;

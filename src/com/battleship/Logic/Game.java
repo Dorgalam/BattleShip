@@ -6,13 +6,16 @@ public class Game {
     private long startTurnTime = 0;
 
 
+    private int boardSize;
+
+
     private int numOfPlayer = 0;
 
     public Game(String xmlPath) throws Exception {
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];
         BattleShipParser parser = new BattleShipParser(xmlPath);
-        int boardSize = parser.getBoardSize();
+        this.boardSize = parser.getBoardSize();
         this.players[0] = new Player(boardSize, parser.getBoardAShips());
         this.players[1] = new Player(boardSize, parser.getBoardBShips());
 
@@ -83,6 +86,9 @@ public class Game {
         return players[numOfPlayer].getAvgTimeOfTurn();
     }
 
+    public int getBoardSize() {
+        return boardSize;
+    }
     public int getNumOfPlayer() {
         return numOfPlayer;
     }

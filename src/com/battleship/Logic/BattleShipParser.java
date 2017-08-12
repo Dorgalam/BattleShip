@@ -53,15 +53,15 @@ class BattleShipParser {
         Utils.typeMap = Collections.unmodifiableMap(Utils.typeMap);
     }
 
-    Ship[] getBoardAShips() {
+    Ship[] getBoardAShips() throws GameException {
         Element boardA = (Element) dom.getElementsByTagName("board").item(0);
         return getBoardShips(boardA);
     }
-    Ship[] getBoardBShips() {
+    Ship[] getBoardBShips() throws GameException {
         Element boardB = (Element) dom.getElementsByTagName("board").item(1);
         return getBoardShips(boardB);
     }
-    private Ship[] getBoardShips(Element board) {
+    private Ship[] getBoardShips(Element board) throws GameException {
         NodeList shipList = board.getElementsByTagName("ship");
         int numShips = shipList.getLength();
         Ship[] boardShips = new Ship[numShips];
@@ -73,6 +73,9 @@ class BattleShipParser {
             x = Integer.parseInt(position.getAttributes().getNamedItem("x").getNodeValue());
             y = Integer.parseInt(position.getAttributes().getNamedItem("y").getNodeValue());
             String direction = Utils.getFirstChildText(ship, "direction");
+            if (!Utils.typeMap.containsKey(type)) {
+                throw new GameException("Error loading ships: Ship of type " + type + " wasn't declared in the XML");
+            }
             boardShips[i] = new Ship(
                     Utils.typeMap.get(type).getLength(),
                     Utils.getDirectionFromString(direction),
@@ -94,10 +97,8 @@ class BattleShipParser {
             Validator validator = schema.newValidator();
             xmlFile = new File(xmlPath);
             validator.validate(new StreamSource(xmlFile));
-        } catch (IOException e) {
-            throw new GameException(e.getMessage());
-        } catch (SAXException e) {
-            throw new GameException("Xml is not built according to rules");
+        } catch (Exception e) {
+            throw new GameException("Error: XML is not built correctly");
         }
     }
 
