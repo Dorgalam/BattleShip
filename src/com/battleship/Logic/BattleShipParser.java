@@ -1,12 +1,14 @@
 package com.battleship.Logic;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -14,19 +16,25 @@ import javax.xml.validation.Validator;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 class BattleShipParser {
     private Element dom;
+    private File xmlFile;
     BattleShipParser(String xmlPath) throws GameException {
         try {
             isSchemaValid(xmlPath);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
-            this.dom = db.parse(new File(xmlPath)).getDocumentElement();
+            this.dom = db.parse(xmlFile).getDocumentElement();
             setShipTypesUtil();
-        } catch (Exception e) {
-            throw new GameException("XML is invalid!");
+        } catch(IOException e) {
+            throw new GameException(e.getMessage());
+        } catch (SAXException e) {
+            throw new GameException("Invalid XML (possible)?");
+        } catch (ParserConfigurationException e) {
+            throw new GameException("Cannot parse XML");
         }
     }
     private void setShipTypesUtil() {
@@ -84,9 +92,12 @@ class BattleShipParser {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = factory.newSchema(new File("src/resources/BattleShipGame.xsd"));
             Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(new File(xmlPath)));
-        } catch (Exception e) {
-            throw new GameException("Error: XML does not fit requirements");
+            xmlFile = new File(xmlPath);
+            validator.validate(new StreamSource(xmlFile));
+        } catch (IOException e) {
+            throw new GameException(e.getMessage());
+        } catch (SAXException e) {
+            throw new GameException("Xml is not built according to rules");
         }
     }
 

@@ -4,7 +4,7 @@ import com.battleship.ConsoleUI.ConsoleUI;
 
 public class Main {
     public static void main( final String[] args ) {
-        new ConsoleUI().startGame();
+        new ConsoleUI().start();
     }
 }
 /*

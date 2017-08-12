@@ -5,7 +5,10 @@ public class Game {
     private Player[] players;
     private long startTurnTime = 0;
 
-    public Game(String xmlPath) throws GameException {
+
+    private int numOfPlayer = 0;
+
+    public Game(String xmlPath) throws Exception {
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];
         BattleShipParser parser = new BattleShipParser(xmlPath);
@@ -23,52 +26,44 @@ public class Game {
         this.players[1] = player2;
     }
 
-    public void startTurnClock(int numOfPlayer) {
+    public void startTurnClock() {
         startTurnTime = java.time.Instant.now().getEpochSecond();
         players[numOfPlayer].incTurn();
     }
 
-    public void endTurnClock(int numOfPlayer){
+    public void endTurnClock(){
         long end = java.time.Instant.now().getEpochSecond();
         players[numOfPlayer].setAvgTimeOfTurn(end-startTurnTime);
     }
 
-    public int makeTurn(int numOfPlayer, int x, int y) throws Exception
+    public int makeTurn(int x, int y) throws Exception
     {
         Point p = new Point(x,y);
-        try {
-            int res;
-            if (players[numOfPlayer].isAlreadyChecked(p)) {
-                res = -1;
-            } else {
-                res = players[1 - numOfPlayer].checkHit(p);
-            }
-            if (res >= 1) {
-                players[numOfPlayer].incHit(p);
-            } else if (res == 0) {
-                players[numOfPlayer].incMiss(p);
-            }
-            return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
+        int res;
+        if (players[numOfPlayer].isAlreadyChecked(p)) {
+            res = -1;
+        } else {
+            res = players[1 - numOfPlayer].checkHit(p);
         }
-        catch (Exception ex) {
-            throw ex;
+        if (res >= 1) {
+            players[numOfPlayer].incHit(p);
+        } else if (res == 0) {
+            numOfPlayer = ++numOfPlayer % 2;
+            players[numOfPlayer].incMiss(p);
         }
+        return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
     public int putMine(int numOfPlayer, int x, int y) throws GameException{
         if (players[numOfPlayer].isMinesLeft()) {
-            try {
-                if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y)))
-                    return 1; // valid place + mines left
-                return 2; // mines left + is not valid place
-            } catch (GameException ex) {
-                throw ex;
-            }
+            if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y)))
+                return 1; // valid place + mines left
+            return 2; // mines left + is not valid place
         }
         return 0; // there are no mines left
     }
 
-    public boolean isGameFinished(int numOfPlayer){
+    public boolean isGameFinished(){
         return players[1 - numOfPlayer].allShipsDown();
     }
 
@@ -76,16 +71,20 @@ public class Game {
         return players[0].getNumberOfTurns() + players[1].getNumberOfTurns();
     }
 
-    public int getNumberOfHits(int numOfPlayer){
+    public int getNumberOfHits(){
         return players[numOfPlayer].getHits();
     }
 
-    public int getNumberOfMisses(int numOfPlayer){
+    public int getNumberOfMisses(){
         return players[numOfPlayer].getMisses();
     }
 
-    public double getAvgTime(int numOfPlayer){
+    public double getAvgTime(){
         return players[numOfPlayer].getAvgTimeOfTurn();
+    }
+
+    public int getNumOfPlayer() {
+        return numOfPlayer;
     }
 
     public long[] GetTimePass(){
