@@ -4,11 +4,7 @@ public class Game {
     private long startGameTime = 0;
     private Player[] players;
     private long startTurnTime = 0;
-
-
     private int boardSize;
-
-
     private int numOfPlayer = 0;
 
     public Game(String xmlPath) throws Exception {
@@ -51,18 +47,22 @@ public class Game {
         if (res >= 1) {
             players[numOfPlayer].incHit(p);
         } else if (res == 0) {
-            numOfPlayer = ++numOfPlayer % 2;
             players[numOfPlayer].incMiss(p);
+            numOfPlayer = 1 - numOfPlayer;
         }
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
-    public int putMine(int numOfPlayer, int x, int y) throws GameException{
+    public int putMine(int x, int y) throws GameException{
         if (players[numOfPlayer].isMinesLeft()) {
-            if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y)))
+            if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y))) {
+                numOfPlayer = 1 - numOfPlayer;
                 return 1; // valid place + mines left
+            }
+            numOfPlayer = 1 - numOfPlayer;
             return 2; // mines left + is not valid place
         }
+        numOfPlayer = 1 - numOfPlayer;
         return 0; // there are no mines left
     }
 
@@ -74,15 +74,15 @@ public class Game {
         return players[0].getNumberOfTurns() + players[1].getNumberOfTurns();
     }
 
-    public int getNumberOfHits(){
+    public int getNumberOfHits(int numOfPlayer){
         return players[numOfPlayer].getHits();
     }
 
-    public int getNumberOfMisses(){
+    public int getNumberOfMisses(int numOfPlayer){
         return players[numOfPlayer].getMisses();
     }
 
-    public double getAvgTime(){
+    public double getAvgTime(int numOfPlayer){
         return players[numOfPlayer].getAvgTimeOfTurn();
     }
 
@@ -102,5 +102,16 @@ public class Game {
         result[0] = minutes;
         result[1] = seconds;
         return  result;
+    }
+
+    public Board[] getMyBoards(int numOfPlayer){
+        Board [] myBoards = new Board[2];
+        myBoards[0] = players[numOfPlayer].getMyBoard();
+        myBoards[1] = players[numOfPlayer].getTryingBoard();
+        return myBoards;
+    }
+
+    public int getScore(int numOfPlayer){
+        return players[numOfPlayer].getScore();
     }
 }

@@ -9,6 +9,7 @@ public class Player {
     private int misses = 0;
     private double avgTimeOfTurn = 0;
     private int minesLeft = 2;
+    private int score = 0;
 
     public Player(Board myBoard, Ship[] myShips) {
         this.myBoard = myBoard;
@@ -121,4 +122,18 @@ public class Player {
      boolean isMinesLeft() {
         return minesLeft > 0;
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
+    }
+
+    public Board getMyBoard() {
+        return myBoard;
+    }
+
+    public Board getTryingBoard() { return tryingBoard; }
 }

@@ -1,10 +1,10 @@
 package com.battleship.Logic;
 
 public class Board {
-    static final int EMPTY_CELL = -1;
-    static final int MINE = -2;
-    static final int HIT = -3;
-    static final int MISS = -4;
+    public static final int EMPTY_CELL = -1;
+    public static final int MINE = -2;
+    public static final int HIT = -3;
+    public static final int MISS = -4;
     static final int ROW = 0;
     private int[][] matrix;
     private int matrixSize;
@@ -28,7 +28,6 @@ public class Board {
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
         Point[] pArray = new Point[ships.length];
-        matrix = new int[size][size];
         for (int i = 0; i < ships.length; i++) {
             pArray = ships[i].getLocation();
             for (int j = 0; j < ships[i].getCount(); j++) {
@@ -122,5 +121,13 @@ public class Board {
         if(matrix[p.getX()][p.getY()] == MISS || matrix[p.getX()][p.getY()] == HIT)
             return true;
         return false;
+    }
+
+    public int[][] getMatrix() {
+        return matrix;
+    }
+
+    public int[] getLine(int i) {
+        return matrix[i];
     }
 }

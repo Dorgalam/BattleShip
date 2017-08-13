@@ -16,7 +16,7 @@ public class GameException extends Exception {
         return msg;
     }
 
-    void setMsg(String ms) {
+    public void setMsg(String ms) {
         msg = ms;
     }
 
