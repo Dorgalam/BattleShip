@@ -4,6 +4,8 @@ import com.battleship.Logic.Board;
 import com.battleship.Logic.Game;
 import com.battleship.Logic.GameException;
 
+import java.lang.ref.Reference;
+import java.sql.Ref;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -25,17 +27,15 @@ public class ConsoleUI {
         int choice;
         try {
             while (!gameEnded) {
-                if(gameStarted) {
+                if(gameStarted)
                     displayOptions(gameLogic.getNumOfPlayer());
-                }
                 else
                     displayOptions(-1);
                 choice = reader.nextInt();
-                if (choice < 0 || choice > 7) {
+                if (choice < 0 || choice > 7)
                     System.out.println("Invalid input, please enter a number between 1 and 7");
-                } else {
+                else
                     gameEnded = processChoice(choice);
-                }
             }
         }
         catch (Exception ex){
@@ -123,55 +123,75 @@ public class ConsoleUI {
         }
     }
 
-    private void makeAMove() throws Exception{
+    private void makeAMove() {
+        displayQuestion();
+        int[] coord = new int[2];
         try {
-            int[] coord = getCoordination();
-            int result = gameLogic.makeTurn(coord[ 0 ] - 1, coord[ 1 ] - 1);
-            switch (result) {
-                case 1:
-                    System.out.println("hit");
-                    break;
-                case 0:
-                    break;
-                case -1:
-                    System.out.println("checked already");
-                    break;
-                default:
-                    System.out.println("ship down: ship points = " + (result - 2));
-            }
-        }
-         catch (GameException ex) {
+            coord = getCoordination();
+        } catch (GameException ex) {
             System.out.println(ex.getMessage());
             makeAMove();
-        } catch (Exception e) {
-            System.out.println("fuck");
+            return;
+        }
+        int result = gameLogic.makeTurn(coord[ 0 ] - 1, coord[ 1 ] - 1);
+        switch (result) {
+            case 1:
+                System.out.println("hit!");
+                break;
+            case 0:
+                System.out.println("missed,try better next time:)");
+                break;
+            case -1:
+                System.out.println("checked already");
+                break;
+            case -2:
+                System.out.println("mine hit!"); // need to do something
+                break;
+            default:
+                System.out.println("great hit you took one ship down: ship points = " + (result - 2));
         }
     }
 
-    private int[] getCoordination() throws Exception{
-        boolean validChoice = false;
-        int []choice = new int[2];
-        while (!validChoice) {
-            displayQuestion();
-            try {
-                choice[ 0 ] = reader.nextInt();
-                choice[ 1 ] = reader.nextInt();
-            }
-            catch (Exception ex){
-                throw ex;
-            }
-            if ((choice[0] < 1 || choice[0] > boardSize) && (choice[1] < 1 || choice[1] > boardSize)) {
-                System.out.println("Invalid input, please enter a number between 1 and 7");
-            } else {
-                validChoice = true;
-            }
+    private int[] getCoordination() throws GameException {
+        int line,colum;
+        System.out.println("please enter two numbers(first -> line,second -> column) between 1 to " + boardSize);
+        try {
+            line = getValidNumber();
+        }
+        catch (GameException ex){
+            ex.setMsg("your line choice is wrong, " + ex.getMessage());
+            throw ex;
+        }
+        try {
+            colum = getValidNumber();
+        }
+        catch (GameException ex){
+            ex.setMsg("your column choice is wrong, " + ex.getMessage());
+            throw ex;
+        }
+        return new int[]{line,colum};
+    }
+
+    public int getValidNumber() throws GameException {
+        int choice;
+        try {
+            choice = reader.nextInt();
+        }
+        catch (Exception ex){
+            GameException exc = new GameException();
+            exc.setMsg(String.format("Not a number ,please enter a number between 1 and %d",boardSize));
+            reader.nextLine();
+            throw exc;
+        }
+        if (choice < 1 || choice > boardSize) {
+            GameException ex = new GameException();
+            ex.setMsg(String.format("you chose number: %d,out of range - please enter a number between 1 and %d",choice,boardSize));
+            throw ex;
         }
         return choice;
     }
-
     private void displayQuestion() {
         System.out.println("Player #" + (gameLogic.getNumOfPlayer() + 1));
-        System.out.println((String.format(("please enter coordination: two numbers between 1 and %d "), boardSize)));
     }
 
     private void showGameStatistics() {
@@ -229,7 +249,33 @@ public class ConsoleUI {
 
     private void putMine() {
         displayQuestion();
-        System.out.println("doing nothing");
+        int[] coord = new int[ 2 ];
+        try {
+            coord = getCoordination();
+        } catch (GameException ex) {
+            System.out.println(ex.getMessage());
+            putMine();
+            return;
+        }
+        int result = gameLogic.putMine(coord[ 0 ] - 1, coord[ 1 ] - 1);
+        switch (result) {
+            case 1:
+                System.out.println(String.format("mine located now in (%d,%d) and you have mine left",coord[0],coord[1])) ;
+                break;
+            case 0:
+                System.out.println("sorry, there are no mines left!,make another move.");
+                loopThroughGame();
+                break;
+            case 2:
+                System.out.println(String.format("you tried to put your mine in (%d,%d),which is not available +" +
+                        "try another coordination",coord[0],coord[1]));
+                putMine();
+                break;
+            default:
+                System.out.println("Wrong");
+                return;
+        }
+
     }
 
     private void getXML() {

@@ -47,18 +47,11 @@ public class Board {
         return matrixSize;
     }
 
-    public boolean isHit(Point p) throws Exception {
-        try {
-            if (matrix[p.getX()][p.getY()] >= 0 || matrix[p.getX()][p.getY()] == MINE) {
-                return true;
-            }
-            return false;
-        } catch (Exception exc) {// out of range exception
-            GameException ex = new GameException(exc.getMessage());
-            ex.setMsg(String.format("you tried to attack in a place (%d,%d) that doesn't exist in the board, valid input is between" +
-                    " (1,1) to (%d,%d)", p.getX() + 1, p.getY() + 1, matrixSize,matrixSize),p.getX()+1,p.getY()+1);
-            throw ex;
+    public boolean isHit(Point p) {
+        if (matrix[ p.getX() ][ p.getY() ] >= 0 || matrix[ p.getX() ][ p.getY() ] == MINE) {
+            return true;
         }
+        return false;
     }
 
     public int getSquare(Point p) {

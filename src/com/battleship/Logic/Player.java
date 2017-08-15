@@ -27,45 +27,39 @@ public class Player {
         }
     }
 
-    boolean isValidPlaceForMine(Point point)throws GameException {
+    boolean isValidPlaceForMine(Point point) {
         try {
             if (!myBoard.isValidPlace(point, Board.EMPTY_CELL)) {
                 return false;
             }
-        } catch (GameException ex) {// out of range exception
-            ex.setMsg(String.format("you tried to put a mine in a place(%d,%d) that doesn't exist in the board valid input is" +
-                    " between (1,1) to (%d,%d)", point.getX() + 1, point.getY() + 1, myBoard.getSize(), myBoard.getSize()));
-            throw ex;
+        } catch (GameException e) {
+            return false;
         }
         myBoard.addMine(point);
         minesLeft--;
         return true;
     }
 
-    int checkHit(Point point) throws Exception{
-        try {
-            if (myBoard.isHit(point)) {
-                if (myBoard.getSquare(point) != Board.MINE) {
-                    myShips[myBoard.getSquare(point)].decCount();
-                    if (myShips[myBoard.getSquare(point)].getCount() == 0) {
-                        int score = myShips[myBoard.getSquare(point)].getScore();
-                        myBoard.updateTheBoard(point, Board.HIT);
-                        return 2 + score;
-                    }
+    int checkHit(Point point) {
+        if (myBoard.isHit(point)) {
+            if (myBoard.getSquare(point) != Board.MINE) {
+                myShips[ myBoard.getSquare(point) ].decCount();
+                if (myShips[ myBoard.getSquare(point) ].getCount() == 0) {
+                    int score = myShips[ myBoard.getSquare(point) ].getScore();
                     myBoard.updateTheBoard(point, Board.HIT);
-                    return 1;
-                } else {
-                    myBoard.updateTheBoard(point, Board.MISS);
-                    return -1; /* MINE HIT */
+                    return 2 + score;
                 }
+                myBoard.updateTheBoard(point, Board.HIT);
+                return 1;
             } else {
-                return 0;
+                myBoard.updateTheBoard(point, Board.MISS);
+                return -2; /* MINE HIT */
             }
-        }
-        catch (Exception ex){
-            throw ex;
+        } else {
+            return 0;
         }
     }
+
 
     public boolean allShipsDown(){
         for (Ship s:myShips) {
@@ -87,14 +81,10 @@ public class Player {
         return hits;
     }
 
-    boolean isAlreadyChecked(Point point) throws Exception {
-        try {
-            if (tryingBoard.alreadyChecked(point))
-                return true;
-            return false;
-        } catch (Exception ex) {
-            throw ex;
-        }
+    boolean isAlreadyChecked(Point point) {
+        if (tryingBoard.alreadyChecked(point))
+            return true;
+        return false;
     }
 
     void incHit(Point point) {

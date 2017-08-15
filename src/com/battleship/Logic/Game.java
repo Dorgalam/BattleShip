@@ -35,11 +35,11 @@ public class Game {
         players[numOfPlayer].setAvgTimeOfTurn(end-startTurnTime);
     }
 
-    public int makeTurn(int x, int y) throws Exception
+    public int makeTurn(int x, int y)
     {
         Point p = new Point(x,y);
         int res;
-        if (players[numOfPlayer].isAlreadyChecked(p)) {
+        if (players[numOfPlayer].isAlreadyChecked(p) && players[1-numOfPlayer].getMyBoard().getSquare(p)!=Board.MINE) {
             res = -1;
         } else {
             res = players[1 - numOfPlayer].checkHit(p);
@@ -53,7 +53,7 @@ public class Game {
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
-    public int putMine(int x, int y) throws GameException{
+    public int putMine(int x, int y) {
         if (players[numOfPlayer].isMinesLeft()) {
             if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y))) {
                 numOfPlayer = 1 - numOfPlayer;
@@ -62,7 +62,6 @@ public class Game {
             numOfPlayer = 1 - numOfPlayer;
             return 2; // mines left + is not valid place
         }
-        numOfPlayer = 1 - numOfPlayer;
         return 0; // there are no mines left
     }
 
