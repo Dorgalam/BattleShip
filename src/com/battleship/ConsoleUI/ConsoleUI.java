@@ -24,18 +24,24 @@ public class ConsoleUI {
 
     private void loopThroughGame() {
         boolean gameEnded = false;
+        int playerTurn = -1;
         int choice;
         try {
             while (!gameEnded) {
-                if(gameStarted)
+                if(gameStarted) {
+                    playerTurn = gameLogic.getNumOfPlayer();
                     displayOptions(gameLogic.getNumOfPlayer());
+                }
                 else
                     displayOptions(-1);
                 choice = reader.nextInt();
                 if (choice < 0 || choice > 7)
                     System.out.println("Invalid input, please enter a number between 1 and 7");
-                else
+                else {
                     gameEnded = processChoice(choice);
+                    if(playerTurn!=-1)
+                        gameLogic.endTurnClock(playerTurn);
+                }
             }
         }
         catch (Exception ex){
@@ -137,6 +143,11 @@ public class ConsoleUI {
         switch (result) {
             case 1:
                 System.out.println("hit!");
+                if(gameLogic.isGameFinished()){
+                    System.out.println("player #"+gameLogic.getNumOfPlayer()+" is won the game");
+                    showGameStatistics();
+                    //show the board of each player + exit the game
+                }
                 break;
             case 0:
                 System.out.println("missed,try better next time:)");
@@ -146,6 +157,7 @@ public class ConsoleUI {
                 break;
             case -2:
                 System.out.println("mine hit!"); // need to do something
+                gameLogic.mineHit(coord[ 0 ] - 1, coord[ 1 ] - 1);
                 break;
             default:
                 System.out.println("great hit you took one ship down: ship points = " + (result - 2));
@@ -309,6 +321,7 @@ public class ConsoleUI {
                         "*****************************************************************************************\n";
         if (playerNum != -1) {
             System.out.println(playerTemplate);
+            gameLogic.startTurnClock();
         } else {
             System.out.println(menuTemplate);
         }

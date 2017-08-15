@@ -14,7 +14,6 @@ public class Game {
         this.boardSize = parser.getBoardSize();
         this.players[0] = new Player(boardSize, parser.getBoardAShips());
         this.players[1] = new Player(boardSize, parser.getBoardBShips());
-
     }
 
     public Game(Player player1, Player player2) {
@@ -30,17 +29,21 @@ public class Game {
         players[numOfPlayer].incTurn();
     }
 
-    public void endTurnClock(){
+    public void endTurnClock(int num){
         long end = java.time.Instant.now().getEpochSecond();
-        players[numOfPlayer].setAvgTimeOfTurn(end-startTurnTime);
+        players[num].setAvgTimeOfTurn(end-startTurnTime);
     }
 
     public int makeTurn(int x, int y)
     {
         Point p = new Point(x,y);
         int res;
-        if (players[numOfPlayer].isAlreadyChecked(p) && players[1-numOfPlayer].getMyBoard().getSquare(p)!=Board.MINE) {
-            res = -1;
+        if (players[numOfPlayer].isAlreadyChecked(p)) {
+            if(players[1-numOfPlayer].getMyBoard().getSquare(p)!=Board.MINE)
+                res = -1;
+            else {
+                res = -2;
+            }
         } else {
             res = players[1 - numOfPlayer].checkHit(p);
         }
@@ -51,6 +54,15 @@ public class Game {
             numOfPlayer = 1 - numOfPlayer;
         }
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
+    }
+
+    public void mineHit(int x, int y) {
+        Point point = new Point(x,y);
+        players[numOfPlayer].incHit(point);
+        numOfPlayer = 1- numOfPlayer;
+        int tmp = numOfPlayer;
+        makeTurn(point.getX(),point.getY());
+        numOfPlayer = tmp;
     }
 
     public int putMine(int x, int y) {
