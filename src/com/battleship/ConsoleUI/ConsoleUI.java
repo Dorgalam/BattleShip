@@ -15,6 +15,8 @@ public class ConsoleUI {
     //private int playerNum = -1;
     private int boardSize;
     private Scanner reader = new Scanner(System.in);
+    private boolean xmlEntered = false;
+    private boolean gameEnded = false;
 
     public void start() {
         System.out.println("Welcome to Lior and Dor's awesome BattleShip game!!");
@@ -23,10 +25,8 @@ public class ConsoleUI {
     }
 
     private void loopThroughGame() {
-        boolean gameEnded = false;
         int playerTurn = -1;
         int choice;
-        try {
             while (!gameEnded) {
                 if(gameStarted) {
                     playerTurn = gameLogic.getNumOfPlayer();
@@ -42,16 +42,13 @@ public class ConsoleUI {
                     if(playerTurn!=-1)
                         gameLogic.endTurnClock(playerTurn);
                 }
-            }
         }
-        catch (Exception ex){
-            System.out.println("fuck");
-        }
+        System.exit(0);
+
     }
 
     private void startGame() {
         gameStarted = gameLogic != null;
-       // playerNum = gameLogic.getNumOfPlayer();
         this.boardSize = gameLogic.getBoardSize();
     }
 
@@ -113,7 +110,7 @@ public class ConsoleUI {
         return res;
     }
 
-    private void showGameStatus() {
+    private void showGameStatus(){
         int playerNum = gameLogic.getNumOfPlayer();
         Board[] myBoards = gameLogic.getMyBoards(playerNum);
         String[] menuStatus = new String[ 2 ];
@@ -123,7 +120,7 @@ public class ConsoleUI {
 
     }
 
-    public static void printArray(String[] array) {
+    private static void printArray(String[] array) {
         for (String str : array) {
             System.out.println(str);
         }
@@ -131,7 +128,7 @@ public class ConsoleUI {
 
     private void makeAMove() {
         displayQuestion();
-        int[] coord = new int[2];
+        int[] coord;
         try {
             coord = getCoordination();
         } catch (GameException ex) {
@@ -146,7 +143,7 @@ public class ConsoleUI {
                 if(gameLogic.isGameFinished()){
                     System.out.println("player #"+gameLogic.getNumOfPlayer()+" is won the game");
                     showGameStatistics();
-                    //show the board of each player + exit the game
+                    gameEnded = true;
                 }
                 break;
             case 0:
@@ -184,7 +181,7 @@ public class ConsoleUI {
         return new int[]{line,colum};
     }
 
-    public int getValidNumber() throws GameException {
+    private int getValidNumber() throws GameException {
         int choice;
         try {
             choice = reader.nextInt();
@@ -220,48 +217,60 @@ public class ConsoleUI {
         printArray(menuStats);
     }
 
-    private void exitGame() {
 
-    }
-
-
-    private boolean processChoice(int choice) throws Exception {
-        try {
-            switch (choice) {
-                case 1:
-                    getXML();
-                    break;
-                case 2:
+    private boolean processChoice(int choice) {
+        switch (choice) {
+            case 1:
+                getXML();
+                break;
+            case 2:
+                if (xmlEntered) {
                     startGame();
-                    break;
-                case 3:
+                } else {
+                    System.out.println("Error: a valid XML must be entered first");
+                }
+                break;
+            case 3:
+                if (gameStarted) {
                     showGameStatus();
-                    break;
-                case 4:
+                } else {
+                    System.out.println("Error: game hasn't started yet. cannot show status");
+                }
+                break;
+            case 4:
+                if (gameStarted) {
                     makeAMove();
-                    break;
-                case 5:
+                } else {
+                    System.out.println("Error: game hasn't started yet. cannot make a move");
+                }
+                break;
+            case 5:
+                if (gameStarted) {
                     showGameStatistics();
-                    break;
-                case 6:
-                    exitGame();
-                    return true;
-                case 7:
+                } else {
+                    System.out.println("Error: game hasn't started yet. cannot show statistics");
+                }
+                break;
+            case 6:
+                System.out.println("Better luck next time!");
+                return true;
+            case 7:
+                if (gameStarted) {
                     putMine();
-                    break;
-                default:
-                    break;
-            }
+                } else {
+                    System.out.println("Error: game hasn't started yet. cannot add a mine");
+                }
+                break;
+            default:
+                break;
         }
-        catch (Exception ex){
-            throw ex;
-        }
+
         return false;
     }
 
     private void putMine() {
         displayQuestion();
-        int[] coord = new int[ 2 ];
+        int[] coord;
         try {
             coord = getCoordination();
         } catch (GameException ex) {
@@ -285,13 +294,12 @@ public class ConsoleUI {
                 break;
             default:
                 System.out.println("Wrong");
-                return;
+                break;
         }
 
     }
 
     private void getXML() {
-        boolean xmlEntered = false;
         while (!xmlEntered) {
             try {
                 System.out.println("Please write down your XML's location so we can begin (c:\\DIR\\DIR\\data.xml)");

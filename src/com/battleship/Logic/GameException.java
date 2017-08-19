@@ -7,7 +7,7 @@ public class GameException extends Exception {
 
     public GameException(){}
 
-    GameException(String msg){
+    public GameException(String msg){
         this.msg = msg;
     }
 
