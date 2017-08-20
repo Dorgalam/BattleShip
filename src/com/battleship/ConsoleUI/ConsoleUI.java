@@ -25,27 +25,36 @@ public class ConsoleUI {
     }
 
     private void loopThroughGame() {
-        int playerTurn = -1;
-        int choice;
-            while (!gameEnded) {
-                if(gameStarted) {
-                    playerTurn = gameLogic.getNumOfPlayer();
-                    displayOptions(gameLogic.getNumOfPlayer());
+        int playerTurn = -1, choice = 0, min = 1, max = 1;
+        Boolean validChoice = false;
+        while (!gameEnded) {
+            if (gameStarted) {
+                min = 3;
+                max = 7;
+                playerTurn = gameLogic.getNumOfPlayer();
+            }
+            displayOptions(playerTurn);
+            while (!validChoice) {
+                try {
+                    choice = getValidNumber(min, max);
+                    validChoice = true;
+                } catch (GameException ex) {
+                    System.out.println(ex.getMessage());
                 }
-                else
-                    displayOptions(-1);
-                choice = reader.nextInt();
-                if (choice < 0 || choice > 7)
-                    System.out.println("Invalid input, please enter a number between 1 and 7");
-                else {
-                    gameEnded = processChoice(choice);
-                    if(playerTurn!=-1)
-                        gameLogic.endTurnClock(playerTurn);
-                }
+            }
+            if (gameStarted) {
+                gameEnded = processChoice(choice);
+                gameLogic.endTurnClock(playerTurn);
+            } else {
+                gameEnded = processChoice(choice);
+                if (xmlEntered)
+                    max = 2;
+            }
+            validChoice = false;
         }
         System.exit(0);
-
     }
+
 
     private void startGame() {
         gameStarted = gameLogic != null;
@@ -140,11 +149,6 @@ public class ConsoleUI {
         switch (result) {
             case 1:
                 System.out.println("hit!");
-                if(gameLogic.isGameFinished()){
-                    System.out.println("player #"+gameLogic.getNumOfPlayer()+" is won the game");
-                    showGameStatistics();
-                    gameEnded = true;
-                }
                 break;
             case 0:
                 System.out.println("missed,try better next time:)");
@@ -158,6 +162,11 @@ public class ConsoleUI {
                 break;
             default:
                 System.out.println("great hit you took one ship down: ship points = " + (result - 2));
+                if(gameLogic.isGameFinished()){
+                    System.out.println("player #"+(gameLogic.getNumOfPlayer()+1)+" is won the game");
+                    showGameStatistics();
+                    gameEnded = true;
+                }
         }
     }
 
@@ -165,14 +174,14 @@ public class ConsoleUI {
         int line,colum;
         System.out.println("please enter two numbers(first -> line,second -> column) between 1 to " + boardSize);
         try {
-            line = getValidNumber();
+            line = getValidNumber(1,boardSize);
         }
         catch (GameException ex){
             ex.setMsg("your line choice is wrong, " + ex.getMessage());
             throw ex;
         }
         try {
-            colum = getValidNumber();
+            colum = getValidNumber(1,boardSize);
         }
         catch (GameException ex){
             ex.setMsg("your column choice is wrong, " + ex.getMessage());
@@ -181,20 +190,20 @@ public class ConsoleUI {
         return new int[]{line,colum};
     }
 
-    private int getValidNumber() throws GameException {
+    private int getValidNumber(int minval,int maxval) throws GameException {
         int choice;
         try {
             choice = reader.nextInt();
         }
         catch (Exception ex){
             GameException exc = new GameException();
-            exc.setMsg(String.format("Not a number ,please enter a number between 1 and %d",boardSize));
+            exc.setMsg(String.format("Not a number ,please enter a number between %d and %d",minval,maxval));
             reader.nextLine();
             throw exc;
         }
-        if (choice < 1 || choice > boardSize) {
+        if (choice < minval || choice > maxval) {
             GameException ex = new GameException();
-            ex.setMsg(String.format("you chose number: %d,out of range - please enter a number between 1 and %d",choice,boardSize));
+            ex.setMsg(String.format("you chose number: %d,out of range please enter a number between %d and %d",choice,minval,maxval));
             throw ex;
         }
         return choice;
@@ -221,6 +230,7 @@ public class ConsoleUI {
     private boolean processChoice(int choice) {
         switch (choice) {
             case 1:
+                xmlEntered = false;
                 getXML();
                 break;
             case 2:
