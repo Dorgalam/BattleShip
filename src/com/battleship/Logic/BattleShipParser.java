@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,6 +25,9 @@ class BattleShipParser {
     private File xmlFile;
     BattleShipParser(String xmlPath) throws GameException {
         try {
+            if (!xmlPath.endsWith(".xml")) {
+                throw new GameException("File extension must be .xml");
+            }
             isSchemaValid(xmlPath);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -65,6 +69,8 @@ class BattleShipParser {
         NodeList shipList = board.getElementsByTagName("ship");
         int numShips = shipList.getLength();
         Ship[] boardShips = new Ship[numShips];
+        Map<String, Integer> shipCount = new HashMap<>();
+        Utils.typeMap.forEach((key, value)-> shipCount.put(key, value.getAmount()));
         for (int i = 0; i < numShips; ++i) {
             Element ship = (Element)shipList.item(i);
             String type = Utils.getFirstChildText(ship, "shipTypeId");
@@ -76,12 +82,23 @@ class BattleShipParser {
             if (!Utils.typeMap.containsKey(type)) {
                 throw new GameException("Error loading ships: Ship of type " + type + " wasn't declared in the XML");
             }
+            Integer typeAmount = shipCount.get(type);
+            shipCount.put(type, typeAmount - 1);
             boardShips[i] = new Ship(
                     Utils.typeMap.get(type).getLength(),
                     Utils.getDirectionFromString(direction),
                     x, y,
                     Utils.typeMap.get(type).getScore());
         }
+        for (Map.Entry<String, Integer> entry : shipCount.entrySet()) {
+            Integer value = entry.getValue();
+            String key = entry.getKey();
+            Integer amount = Utils.typeMap.get(key).getAmount();
+            if (entry.getValue() != 0) {
+                throw new GameException("Shiptype " + key + " specified " + amount + " but found " + (amount - value));
+            }
+        }
+
         return boardShips;
     }
     int getBoardSize() {
@@ -97,6 +114,8 @@ class BattleShipParser {
             Validator validator = schema.newValidator();
             xmlFile = new File(xmlPath);
             validator.validate(new StreamSource(xmlFile));
+        } catch(IOException e) {
+             throw new GameException(e.getMessage());
         } catch (Exception e) {
             throw new GameException("Error: XML is not built correctly");
         }

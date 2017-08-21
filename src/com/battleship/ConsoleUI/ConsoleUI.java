@@ -53,7 +53,7 @@ public class ConsoleUI {
             }
             validChoice = false;
         }
-        System.exit(0);
+        exitGame();
     }
 
 
@@ -63,7 +63,8 @@ public class ConsoleUI {
     }
 
     private String[] createStringToPrint(String[] stringArr, Board[] boards) {
-        String[] res = new String[ 2 * boardSize + stringArr.length + 5 ];
+        int size = 2 * boardSize + stringArr.length + 6;
+        String[] res = new String[size];
         int maxLen = (boardSize+1)*2;
         for (String str : stringArr) {
             if (maxLen < str.length())
@@ -78,13 +79,14 @@ public class ConsoleUI {
             res[ i + 1 ] += "|";
         }
         res[stringArr.length + 1] = "your board:";
-        res[stringArr.length + boardSize + 3] = "trying board:";
+        res[stringArr.length + boardSize + 3] = "\ntrying board:";
         for (int i = 0; i < boards.length; i++) {
             int j = 0;
             for (String str:intBoardToString(boards[i])) {
                 res[stringArr.length + i+1 + i*(boardSize+1) + ++j] = str;
             }
         }
+        res[size - 1] = "v: Hit\nx: Miss\n!: Mine\n#: Ship";
         return res;
     }
 
@@ -92,9 +94,9 @@ public class ConsoleUI {
         String []res = new String[boardSize+1];
         res[0] = " |";
         for (int i = 1; i < boardSize + 1; i++)
-            res[0] += i+"|";
+            res[0] +=  i +"|";
         for (int i = 1; i < boardSize + 1; i++) {
-            res[ i ] = i + "|";
+            res[ i ] = (i < 10 ? " " : "") + i + "|";
             int[] line = board.getLine(i-1);
             for (int var : line) {
                 switch (var) {
@@ -166,7 +168,6 @@ public class ConsoleUI {
                 System.out.println("great hit you took one ship down: ship points = " + (result - 2));
                 if(gameLogic.isGameFinished()){
                     System.out.println("player #"+(gameLogic.getNumOfPlayer()+1)+" is won the game");
-                    showGameStatistics();
                     gameEnded = true;
                 }
         }
@@ -192,7 +193,7 @@ public class ConsoleUI {
         return new int[]{line,colum};
     }
 
-    private int getValidNumber(int minval,int maxval) throws GameException {
+    private int getValidNumber(int minval, int maxval) throws GameException {
         int choice;
         try {
             choice = reader.nextInt();
@@ -205,7 +206,7 @@ public class ConsoleUI {
         }
         if (choice < minval || choice > maxval) {
             GameException ex = new GameException();
-            ex.setMsg(String.format("you chose number: %d,out of range please enter a number between %d and %d",choice,minval,maxval));
+            ex.setMsg(String.format("Invalid choice! at this point you may only chose %d-%d",minval,maxval));
             throw ex;
         }
         return choice;
@@ -248,8 +249,9 @@ public class ConsoleUI {
             case 5:
                 showGameStatistics();
                 break;
-            case 6: // TODO:EXIT PROCESS
+            case 6:
                 System.out.println("Better luck next time!");
+                gameEnded = true;
                 return true;
             case 7:
                 gameLogic.startTurnClock();
@@ -259,6 +261,33 @@ public class ConsoleUI {
                 break;
         }
         return false;
+    }
+
+    private void exitGame() {
+        showGameStatistics();
+        String playerOneBoards[][] = new String[2][];
+        String playerTwoBoards[][] = new String[2][];
+        playerOneBoards[0] = intBoardToString(gameLogic.getMyBoards(0)[0]);
+        playerOneBoards[1] = intBoardToString(gameLogic.getMyBoards(0)[1]);
+        playerTwoBoards[0] = intBoardToString(gameLogic.getMyBoards(1)[0]);
+        playerTwoBoards[1] = intBoardToString(gameLogic.getMyBoards(1)[1]);
+        String toPrint[] = new String[playerOneBoards[0].length * 2 + 2];
+        StringBuilder spacing = new StringBuilder();
+        int spacingLength = (playerOneBoards[0][0] + "  ").length() - ("Player #1").length();
+        for(int i = 0; i < spacingLength; ++i) {
+            spacing.append(" ");
+        }
+        toPrint[0] = "\nPlayer #1" + spacing.toString() + "Player #2";
+        int i = 1;
+        for(; i <= playerOneBoards[0].length; ++i) {
+            toPrint[i] = playerOneBoards[0][i - 1] + "  " + playerTwoBoards[0][i - 1];
+        }
+        toPrint[i] = "Attempts" + spacing.toString() + " Attempts";
+        for (int j = 0; j < playerOneBoards[1].length; ++j) {
+            toPrint[++i] = playerTwoBoards[1][j] + "  " + playerTwoBoards[1][j];
+        }
+        printArray(toPrint);
+        System.exit(0);
     }
 
     private void putMine() {
