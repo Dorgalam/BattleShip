@@ -44,7 +44,8 @@ public class ConsoleUI {
             }
             if (gameStarted) {
                 gameEnded = processChoice(choice);
-                gameLogic.endTurnClock(playerTurn);
+                if(choice==4||choice==7)
+                    gameLogic.endTurnClock(playerTurn);
             } else {
                 gameEnded = processChoice(choice);
                 if (xmlEntered)
@@ -155,6 +156,7 @@ public class ConsoleUI {
                 break;
             case -1:
                 System.out.println("checked already");
+                makeAMove();
                 break;
             case -2:
                 System.out.println("mine hit!"); // need to do something
@@ -234,47 +236,28 @@ public class ConsoleUI {
                 getXML();
                 break;
             case 2:
-                if (xmlEntered) {
-                    startGame();
-                } else {
-                    System.out.println("Error: a valid XML must be entered first");
-                }
+                startGame();
                 break;
             case 3:
-                if (gameStarted) {
-                    showGameStatus();
-                } else {
-                    System.out.println("Error: game hasn't started yet. cannot show status");
-                }
+                showGameStatus();
                 break;
             case 4:
-                if (gameStarted) {
-                    makeAMove();
-                } else {
-                    System.out.println("Error: game hasn't started yet. cannot make a move");
-                }
+                gameLogic.startTurnClock();
+                makeAMove();
                 break;
             case 5:
-                if (gameStarted) {
-                    showGameStatistics();
-                } else {
-                    System.out.println("Error: game hasn't started yet. cannot show statistics");
-                }
+                showGameStatistics();
                 break;
-            case 6:
+            case 6: // TODO:EXIT PROCESS
                 System.out.println("Better luck next time!");
                 return true;
             case 7:
-                if (gameStarted) {
-                    putMine();
-                } else {
-                    System.out.println("Error: game hasn't started yet. cannot add a mine");
-                }
+                gameLogic.startTurnClock();
+                putMine();
                 break;
             default:
                 break;
         }
-
         return false;
     }
 
@@ -298,7 +281,7 @@ public class ConsoleUI {
                 loopThroughGame();
                 break;
             case 2:
-                System.out.println(String.format("you tried to put your mine in (%d,%d),which is not available +" +
+                System.out.println(String.format("you tried to put your mine in (%d,%d),which is not available " +
                         "try another coordination",coord[0],coord[1]));
                 putMine();
                 break;
@@ -339,7 +322,6 @@ public class ConsoleUI {
                         "*****************************************************************************************\n";
         if (playerNum != -1) {
             System.out.println(playerTemplate);
-            gameLogic.startTurnClock();
         } else {
             System.out.println(menuTemplate);
         }
