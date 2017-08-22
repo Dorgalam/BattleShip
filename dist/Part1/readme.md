@@ -22,6 +22,6 @@ Implemented bonuses:
 2. Start new game after game ended
 
 Programmers: 
-**Dor Galam**- 311232268 - dorgalam@gmail.com
-**Lior Rokach**- 312484900 - liorokach@gmail.com
+* **Dor Galam**- 311232268 - dorgalam@gmail.com
+* **Lior Rokach**- 312484900 - liorokach@gmail.com
 
