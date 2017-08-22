@@ -5,14 +5,12 @@ class ShipType {
     private int score;
     private int amount;
     private String category;
-    private Ship shipArr[];
 
     ShipType(int length, int score, int amount, String category) {
         this.length = length;
         this.score = score;
         this.category = category;
         this.amount = amount;
-        this.shipArr = new Ship[amount];
     }
 
     int getLength() {
@@ -46,9 +44,5 @@ class ShipType {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public Ship[] getShipArr() {
-        return shipArr;
     }
 }
