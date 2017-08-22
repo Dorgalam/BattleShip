@@ -110,7 +110,7 @@ class BattleShipParser {
     private void isSchemaValid(String xmlPath) throws GameException{
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new File("src/resources/BattleShipGame.xsd"));
+            Schema schema = factory.newSchema(getClass().getResource("/resources/BattleShipGame.xsd"));
             Validator validator = schema.newValidator();
             xmlFile = new File(xmlPath);
             validator.validate(new StreamSource(xmlFile));
