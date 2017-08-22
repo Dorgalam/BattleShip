@@ -23,7 +23,13 @@ public class ConsoleUI {
         loopThroughGame();
 
     }
-
+    private void restartGame() {
+        gameLogic = null;
+        gameStarted = false;
+        xmlEntered = false;
+        gameEnded = false;
+        start();
+    }
     private void loopThroughGame() {
         int playerTurn = -1, choice = 0, min = 1, max = 1;
         Boolean validChoice = false;
@@ -265,7 +271,7 @@ public class ConsoleUI {
     }
 
     private void exitGame() {
-        String msg = new String();
+        String msg;
         int player1Score = gameLogic.getScore(0);
         int player2Score = gameLogic.getScore(1);
         if (player1Score > player2Score) {
@@ -295,7 +301,13 @@ public class ConsoleUI {
             toPrint[i] = playerOneBoards[0][i - 1] + "  " + playerTwoBoards[0][i - 1];
         }
         printArray(toPrint);
-        System.exit(0);
+        System.out.println("Would you like to play again? y/n");
+        char playAgain = reader.next().charAt(0);
+        if (playAgain == 'Y' || playAgain== 'y') {
+            restartGame();
+        } else {
+            System.exit(0);
+        }
     }
 
     private void putMine() {
