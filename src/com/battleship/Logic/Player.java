@@ -60,6 +60,7 @@ public class Player {
         }
     }
 
+    public void decTurns() { this.numberOfTurns--; }
 
     public boolean allShipsDown(){
         for (Ship s:myShips) {

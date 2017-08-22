@@ -29,6 +29,10 @@ public class Game {
         players[numOfPlayer].incTurn();
     }
 
+    public void deleteTurn(){
+        players[numOfPlayer].decTurns();
+    }
+
     public void endTurnClock(int num){
         long end = java.time.Instant.now().getEpochSecond();
         players[num].setAvgTimeOfTurn(end-startTurnTime);
@@ -69,7 +73,7 @@ public class Game {
         if (players[numOfPlayer].isMinesLeft()) {
             if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y))) {
                 numOfPlayer = 1 - numOfPlayer;
-                return 1; // valid place + mines left
+                return 1; // valid place + mine left
             }
             numOfPlayer = 1 - numOfPlayer;
             return 2; // mines left + is not valid place
