@@ -169,7 +169,6 @@ public class ConsoleUI {
             default:
                 System.out.println("great hit you took one ship down: ship points = " + (result - 2));
                 if(gameLogic.isGameFinished()){
-                    System.out.println("player #"+(gameLogic.getNumOfPlayer()+1)+" is won the game");
                     gameEnded = true;
                 }
         }
@@ -221,7 +220,7 @@ public class ConsoleUI {
         String[] menuStats = new String[ 8 ];
         long [] time =  gameLogic.GetTimePass();
         menuStats[ 0 ] = "Number of Turns: " + gameLogic.getNumOfTurns();
-        menuStats[ 1 ] = "Time Passed from the beginning of the game: " + time[0] + ":" + time[1];
+        menuStats[ 1 ] = "Time Passed from the beginning of the game: (mm:ss)" + time[0] + ":" + time[1];
         menuStats[2] = "player #1 score is :" + gameLogic.getNumberOfHits(0);
         menuStats[3] = "player #2 score is :" + gameLogic.getNumberOfHits(1);
         menuStats[4] = "player #1 missed #:" + gameLogic.getNumberOfMisses(0);
@@ -266,6 +265,17 @@ public class ConsoleUI {
     }
 
     private void exitGame() {
+        String msg = new String();
+        int player1Score = gameLogic.getScore(0);
+        int player2Score = gameLogic.getScore(1);
+        if (player1Score > player2Score) {
+            msg = "Player one has won the game!!";
+        } else if (player1Score == player2Score) {
+            msg = "Both players have equal scores!";
+        } else {
+            msg = "Player two has won the game!!";
+        }
+        System.out.println(msg);
         showGameStatistics();
         String playerOneBoards[][] = new String[2][];
         String playerTwoBoards[][] = new String[2][];
@@ -273,7 +283,7 @@ public class ConsoleUI {
         playerOneBoards[1] = intBoardToString(gameLogic.getMyBoards(0)[1]);
         playerTwoBoards[0] = intBoardToString(gameLogic.getMyBoards(1)[0]);
         playerTwoBoards[1] = intBoardToString(gameLogic.getMyBoards(1)[1]);
-        String toPrint[] = new String[playerOneBoards[0].length * 2 + 2];
+        String toPrint[] = new String[playerOneBoards[0].length + 1];
         StringBuilder spacing = new StringBuilder();
         int spacingLength = (playerOneBoards[0][0] + "  ").length() - ("Player #1").length();
         for(int i = 0; i < spacingLength; ++i) {
@@ -283,10 +293,6 @@ public class ConsoleUI {
         int i = 1;
         for(; i <= playerOneBoards[0].length; ++i) {
             toPrint[i] = playerOneBoards[0][i - 1] + "  " + playerTwoBoards[0][i - 1];
-        }
-        toPrint[i] = "Attempts" + spacing.toString() + " Attempts";
-        for (int j = 0; j < playerOneBoards[1].length; ++j) {
-            toPrint[++i] = playerTwoBoards[1][j] + "  " + playerTwoBoards[1][j];
         }
         printArray(toPrint);
         System.exit(0);
