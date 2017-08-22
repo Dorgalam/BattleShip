@@ -78,15 +78,15 @@ public class ConsoleUI {
             }
             res[ i + 1 ] += "|";
         }
-        res[stringArr.length + 1] = "your board:";
-        res[stringArr.length + boardSize + 3] = "\ntrying board:";
+        res[stringArr.length + 1] = "Your board:";
+        res[stringArr.length + boardSize + 3] = "\nAttempts board:";
         for (int i = 0; i < boards.length; i++) {
             int j = 0;
             for (String str:intBoardToString(boards[i])) {
                 res[stringArr.length + i+1 + i*(boardSize+1) + ++j] = str;
             }
         }
-        res[size - 1] = "v: Hit on your trying board, on your board if appear symbolized- ship took hit\nx: Miss\n!: Mine\n#: Ship";
+        res[size - 1] = "v: Hit (If it's your board than your ship's been hit)\nx: Miss\n!: Mine\n#: Ship";
         return res;
     }
 
@@ -153,21 +153,21 @@ public class ConsoleUI {
         int result = gameLogic.makeTurn(coord[ 0 ] - 1, coord[ 1 ] - 1);
         switch (result) {
             case 1:
-                System.out.println("hit!");
+                System.out.println("Hit!");
                 break;
             case 0:
-                System.out.println("missed,try better next time:)");
+                System.out.println("Missed, you'll get them next time");
                 break;
             case -1:
-                System.out.println("checked already");
+                System.out.println("Checked already");
                 makeAMove();
                 break;
             case -2:
-                System.out.println("mine hit!"); // need to do something
+                System.out.println("Mine hit!"); // need to do something
                 gameLogic.mineHit(coord[ 0 ] - 1, coord[ 1 ] - 1);
                 break;
             default:
-                System.out.println("great hit you took one ship down: ship points = " + (result - 2));
+                System.out.println("Great hit! ship is down, its score is " + (result - 2));
                 if(gameLogic.isGameFinished()){
                     gameEnded = true;
                 }
@@ -176,19 +176,19 @@ public class ConsoleUI {
 
     private int[] getCoordination() throws GameException {
         int line,colum;
-        System.out.println("please enter two numbers(first -> line,second -> column) between 1 to " + boardSize);
+        System.out.println("Please enter two numbers(row, column) between 1 and " + boardSize);
         try {
             line = getValidNumber(1,boardSize);
         }
         catch (GameException ex){
-            ex.setMsg("your line choice is wrong, " + ex.getMessage());
+            ex.setMsg("Your line choice is wrong, " + ex.getMessage());
             throw ex;
         }
         try {
             colum = getValidNumber(1,boardSize);
         }
         catch (GameException ex){
-            ex.setMsg("your column choice is wrong, " + ex.getMessage());
+            ex.setMsg("Your column choice is wrong, " + ex.getMessage());
             throw ex;
         }
         return new int[]{line,colum};
@@ -219,8 +219,8 @@ public class ConsoleUI {
     private void showGameStatistics() {
         String[] menuStats = new String[ 8 ];
         long [] time =  gameLogic.GetTimePass();
-        menuStats[ 0 ] = "Number of Turns: " + gameLogic.getNumOfTurns();
-        menuStats[ 1 ] = "Time Passed from the beginning of the game: (mm:ss)" + time[0] + ":" + time[1];
+        menuStats[ 0 ] = "Number of turns: " + gameLogic.getNumOfTurns();
+        menuStats[ 1 ] = "Time passed since the game started: (mm:ss)" + time[0] + ":" + time[1];
         menuStats[2] = "player #1 score is :" + gameLogic.getNumberOfHits(0);
         menuStats[3] = "player #2 score is :" + gameLogic.getNumberOfHits(1);
         menuStats[4] = "player #1 missed #:" + gameLogic.getNumberOfMisses(0);
@@ -311,15 +311,15 @@ public class ConsoleUI {
         int result = gameLogic.putMine(coord[ 0 ] - 1, coord[ 1 ] - 1);
         switch (result) {
             case 1:
-                System.out.println(String.format("mine located now in (%d,%d) successfully",coord[0],coord[1])) ;
+                System.out.println(String.format("Mine placed in (%d,%d) successfully",coord[0],coord[1])) ;
                 break;
             case 0:
-                System.out.println("sorry, there are no mines left! make another move.");
+                System.out.println("Sorry, there are no mines left! make another move.");
                 gameLogic.deleteTurn();
                 loopThroughGame();
                 break;
             case 2:
-                System.out.println(String.format("you tried to put your mine in (%d,%d),which is not available! " +
+                System.out.println(String.format("You tried to put your mine in (%d,%d),which is not available! " +
                         "try another coordination:)",coord[0],coord[1]));
                 putMine();
                 break;
