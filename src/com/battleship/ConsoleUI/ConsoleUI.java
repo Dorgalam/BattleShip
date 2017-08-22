@@ -302,7 +302,17 @@ public class ConsoleUI {
         }
         printArray(toPrint);
         System.out.println("Would you like to play again? y/n");
-        char playAgain = reader.next().charAt(0);
+        char playAgain = 'n';
+        boolean validChoice = false;
+        while(!validChoice) {
+            String choice = reader.next();
+            playAgain = choice.charAt(0);
+            if ((playAgain == 'Y' || playAgain == 'y' || playAgain == 'n' || playAgain == 'N') && choice.length() == 1 ) {
+                validChoice = true;
+            } else {
+                System.out.println("Invalid choice! please enter y (yes) or n (no)");
+            }
+        }
         if (playAgain == 'Y' || playAgain== 'y') {
             restartGame();
         } else {
