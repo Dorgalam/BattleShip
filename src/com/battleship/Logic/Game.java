@@ -8,16 +8,20 @@ public class Game {
     private int numOfPlayer = 0;
 
     public Game(String xmlPath) throws Exception {
-        this.startGameTime = java.time.Instant.now().getEpochSecond();
-        this.players = new Player[2];
-        BattleShipParser parser = new BattleShipParser(xmlPath);
-        this.boardSize = parser.getBoardSize();
-        this.players[0] = new Player(boardSize, parser.getBoardAShips());
-        this.players[1] = new Player(boardSize, parser.getBoardBShips());
+        try {
+            this.startGameTime = java.time.Instant.now().getEpochSecond();
+            this.players = new Player[ 2 ];
+            BattleShipParser parser = new BattleShipParser(xmlPath);
+            this.boardSize = parser.getBoardSize();
+            this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
+            this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
+        }
+        catch (GameException ex){
+            throw ex;
+        }
     }
 
     public Game(Player player1, Player player2) {
-
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];
         this.players[0] = player1;
@@ -75,7 +79,6 @@ public class Game {
                 numOfPlayer = 1 - numOfPlayer;
                 return 1; // valid place + mine left
             }
-            numOfPlayer = 1 - numOfPlayer;
             return 2; // mines left + is not valid place
         }
         return 0; // there are no mines left

@@ -59,6 +59,7 @@ public class ConsoleUI {
             }
             validChoice = false;
         }
+        System.out.println("player # "+ (1 + gameLogic.getNumOfPlayer()) +" won the game!!");
         exitGame();
     }
 
@@ -92,7 +93,8 @@ public class ConsoleUI {
                 res[stringArr.length + i+1 + i*(boardSize+1) + ++j] = str;
             }
         }
-        res[size - 1] = "v: Hit (If it's your board than your ship's been hit)\nx: Miss\n!: Mine\n#: Ship";
+        res[size - 1] = "v: Hit (If it's your board than your ship's been hit)\nx: Miss (If it's your board than your mine " +
+                "been hit)\n!: Mine\n#: Ship";
         return res;
     }
 
@@ -142,7 +144,8 @@ public class ConsoleUI {
 
     private static void printArray(String[] array) {
         for (String str : array) {
-            System.out.println(str);
+            if(str != null)
+                System.out.println(str);
         }
     }
 
@@ -174,9 +177,8 @@ public class ConsoleUI {
                 break;
             default:
                 System.out.println("Great hit! ship is down, its score is " + (result - 2));
-                if(gameLogic.isGameFinished()){
+                if(gameLogic.isGameFinished())
                     gameEnded = true;
-                }
         }
     }
 
@@ -244,6 +246,7 @@ public class ConsoleUI {
                 getXML();
                 break;
             case 2:
+                System.out.println("starting game! good luck :)");
                 startGame();
                 break;
             case 3:
@@ -252,14 +255,13 @@ public class ConsoleUI {
             case 4:
                 gameLogic.startTurnClock();
                 makeAMove();
-                break;
+                return gameEnded;
             case 5:
                 showGameStatistics();
                 break;
             case 6:
-                System.out.println("Better luck next time!");
-                gameEnded = true;
-                return true;
+                System.out.println("better luck next time:)\nplayer # "+ ((1 - gameLogic.getNumOfPlayer())+1) +" won the game!!");
+                exitGame();
             case 7:
                 gameLogic.startTurnClock();
                 putMine();
@@ -271,17 +273,6 @@ public class ConsoleUI {
     }
 
     private void exitGame() {
-        String msg;
-        int player1Score = gameLogic.getScore(0);
-        int player2Score = gameLogic.getScore(1);
-        if (player1Score > player2Score) {
-            msg = "Player one has won the game!!";
-        } else if (player1Score == player2Score) {
-            msg = "Both players have equal scores!";
-        } else {
-            msg = "Player two has won the game!!";
-        }
-        System.out.println(msg);
         showGameStatistics();
         String playerOneBoards[][] = new String[2][];
         String playerTwoBoards[][] = new String[2][];

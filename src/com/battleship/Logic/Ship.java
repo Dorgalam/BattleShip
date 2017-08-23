@@ -6,6 +6,8 @@ class Ship {
     private Point[] loc;
 
     Ship(int length, int dir, int x, int y, int score) {
+        x--;
+        y--;
         this.score = score;
         this.count = length;
         this.loc = new Point[length];

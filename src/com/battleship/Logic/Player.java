@@ -11,19 +11,21 @@ public class Player {
     private int minesLeft = 2;
     private int score = 0;
 
-    public Player(Board myBoard, Ship[] myShips) {
+    public Player(Board myBoard, Ship[] myShip) {
         this.myBoard = myBoard;
         this.tryingBoard = new Board(myBoard.getSize());
         this.myShips = myShips;
     }
 
-    Player(int boardSize, Ship[] myShips) {
+    Player(int boardSize, Ship[] myShips) throws GameException{
         try {
             this.myBoard = new Board(boardSize, myShips);
             this.tryingBoard = new Board(boardSize);
             this.myShips = myShips;
         } catch (Exception e) {
-            System.out.println("Board details are invalid, please try another XML");
+            GameException ex = new GameException();
+            ex.setMsg("Board details in this xml are invalid, please try another XML");
+            throw ex;
         }
     }
 

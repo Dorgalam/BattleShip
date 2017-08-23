@@ -27,6 +27,7 @@ public class Board {
 
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
+        int shipSquares = 0;
         Point[] pArray = new Point[ships.length];
         for (int i = 0; i < ships.length; i++) {
             pArray = ships[i].getLocation();
@@ -40,6 +41,16 @@ public class Board {
                     throw ex;
                 }
             }
+        }
+        for (Ship s:ships) {
+            shipSquares+= s.getCount();
+        }
+        try {
+            if (!isValidBoard(shipSquares))
+                throw new GameException();
+        }
+        catch (GameException ex){
+            throw ex;
         }
     }
 
@@ -90,8 +101,8 @@ public class Board {
                     "valid input is between (1,1) to (%d,%d)", x + 1, y + 1, matrixSize,matrixSize), x + 1, y + 1);
             throw ex;
         }
-        for (int i = x - 1; i < x + 1; i++) {
-            for (int j = y - 1; j < y + 1; j++) {
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
                 if (!(i < 0 || i >= matrixSize || j < 0 || j >= matrixSize)) {
                     if (matrix[i][j] != validType && matrix[i][j] != EMPTY_CELL) {
                         return false;
