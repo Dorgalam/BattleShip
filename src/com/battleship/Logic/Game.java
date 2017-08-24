@@ -13,6 +13,8 @@ public class Game {
             this.players = new Player[ 2 ];
             BattleShipParser parser = new BattleShipParser(xmlPath);
             this.boardSize = parser.getBoardSize();
+            if(boardSize<5||boardSize>20)
+                throw new GameException("your board size is "+ boardSize +" that's invalid, need to be between 5 and 20");
             this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
             this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
         }
