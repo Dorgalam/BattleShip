@@ -31,7 +31,7 @@ public class Player {
 
     boolean isValidPlaceForMine(Point point) {
         try {
-            if (!myBoard.isValidPlace(point, Board.EMPTY_CELL)) {
+            if (!myBoard.isValidPlace(point, Board.MINE)) {
                 return false;
             }
         } catch (GameException e) {

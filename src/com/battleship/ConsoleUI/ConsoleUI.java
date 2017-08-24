@@ -372,9 +372,26 @@ public class ConsoleUI {
                         "|                    |    3. Show game status      6. End game                          |\n" +
                         "*****************************************************************************************\n";
         if (playerNum != -1) {
+            String[][] playerBoards = new String[2][];
+            playerBoards[0] = intBoardToString(gameLogic.getMyBoards(playerNum)[0]);
+            playerBoards[1] = intBoardToString(gameLogic.getMyBoards(playerNum)[1]);
+            printBoards(playerBoards);
             System.out.println(playerTemplate);
         } else {
             System.out.println(menuTemplate);
         }
+    }
+    private void printBoards(String[][] boards) {
+        String toPrint[] = new String[boards[0].length + 1];
+        StringBuilder spacing = new StringBuilder();
+        int spacingLength = (boards[0][0]).length() - "Your board".length();
+        for(int i = 0; i <= spacingLength; ++i) {
+            spacing.append(" ");
+        }
+        toPrint[0] = "Your board" + spacing + "Attempts board";
+        for(int i=1; i <= boards[0].length; ++i) {
+            toPrint[i] = boards[0][i - 1] + "  " + boards[1][i - 1];
+        }
+        printArray(toPrint);
     }
 }
