@@ -69,6 +69,10 @@ public class Board {
         return matrix[p.getX()][p.getY()];
     }
 
+    public int getSquare(int x, int y) {
+        return matrix[x][y];
+    }
+
     public boolean isValidBoard(int shipsSquares) throws GameException {
         int countShipsSquares = 0;
         try {

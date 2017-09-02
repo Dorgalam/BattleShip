@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<TabPane fx:id="gameTabs" prefHeight="459.0" prefWidth="480.0" tabClosingPolicy="UNAVAILABLE" visible="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.GameTabsController">
+  <tabs>
+    <Tab text="Opponent's grid" id="0">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <fx:include fx:id="opponentsGrid" source="OpponentsGrid.fxml" />
+               </children>
+            </AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Your Grid" id="1">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <fx:include fx:id="yourGrid" source="YourGrid.fxml" />
+               </children>
+            </AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
