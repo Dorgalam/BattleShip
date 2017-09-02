@@ -1,6 +1,6 @@
 package com.battleship.Logic;
 
-class Ship {
+public class Ship {
     private int count;
     private int score;
     private Point[] loc;

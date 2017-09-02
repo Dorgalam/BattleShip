@@ -1,6 +1,6 @@
 package com.battleship.Logic;
 
-class Point {
+public class Point {
     private int x,y;
 
     Point (int x, int y) {
@@ -8,10 +8,10 @@ class Point {
         this.y = y;
     }
 
-    int getX() {
+    public int getX() {
         return x;
     }
-    int getY() {
+    public int getY() {
         return y;
     }
     void setX(int x) {

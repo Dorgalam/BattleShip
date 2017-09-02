@@ -23,6 +23,24 @@ public class Game {
         }
     }
 
+    public Game(String xmlPath, String playerOne, String playerTwo) throws Exception {
+        try {
+            this.startGameTime = java.time.Instant.now().getEpochSecond();
+            this.players = new Player[ 2 ];
+            BattleShipParser parser = new BattleShipParser(xmlPath);
+            this.boardSize = parser.getBoardSize();
+            this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
+            this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
+        }
+        catch (GameException ex){
+            throw ex;
+        }
+    }
+
+    public Ship[] getPlayerShips() {
+        return players[numOfPlayer].getMyShips();
+    }
+
     public Game(Player player1, Player player2) {
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];

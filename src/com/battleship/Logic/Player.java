@@ -42,6 +42,10 @@ public class Player {
         return true;
     }
 
+    public Ship[] getMyShips() {
+        return myShips;
+    }
+
     int checkHit(Point point) {
         if (myBoard.isHit(point)) {
             if (myBoard.getSquare(point) != Board.MINE) {
