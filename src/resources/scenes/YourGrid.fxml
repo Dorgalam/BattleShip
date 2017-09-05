@@ -5,7 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<Pane fx:id="yourGrid" minHeight="700.0" minWidth="700.0" opacity="0.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
+<Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
    <children>
       <GridPane fx:id="grid" layoutX="128.0" layoutY="135.0" prefHeight="26.0" prefWidth="16.0">
          <columnConstraints>
@@ -15,7 +15,7 @@
             <RowConstraints />
          </rowConstraints>
       </GridPane>
-      <Text fx:id="playerName" layoutX="125.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0">
+      <Text fx:id="playerName" layoutX="56.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.0">
          <font>
             <Font size="18.0" />
          </font>

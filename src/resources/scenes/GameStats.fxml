@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="gameStats" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="400.0" opacity="0.0" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.GameStatsController">
+   <children>
+      <Text layoutX="59.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game statistics so far:" underline="true">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
+      <Text layoutX="98.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" />
+      <Text fx:id="turns" layoutX="192.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="turns" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="timePassed" layoutX="192.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="time" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text layoutX="141.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time:" />
+      <Text fx:id="playerOne" layoutX="155.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="playerOne" />
+      <Text fx:id="playerTwo" layoutX="264.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="playerTwo" />
+      <Text layoutX="92.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Misses:" />
+      <Text layoutX="14.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Average time for turn:" />
+      <Text layoutX="141.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Turns:" />
+      <Text fx:id="scoreOne" layoutX="142.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="scoreOne" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="scoreTwo" layoutX="250.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" text="scoreTwo" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="missesOne" layoutX="142.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="missesOne" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="missesTwo" layoutX="252.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="missesTwo" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="timeOne" layoutX="142.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="timeOne" textAlignment="CENTER" wrappingWidth="80.0" />
+      <Text fx:id="timeTwo" layoutX="252.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="timeTwo" textAlignment="CENTER" wrappingWidth="80.0" />
+   </children>
+</Pane>

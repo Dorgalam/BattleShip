@@ -30,6 +30,7 @@
     -fx-border-color: #B4B4FF;
     -fx-border-width: 1;
     -fx-background-color: white;
+    -fx-start-margin: -1;
 }
 .empty-cell:hover {
     -fx-border-color: #40BF44;
@@ -75,10 +76,28 @@
     -fx-background-color: rgba(0,0,255,.05);
 }
 .miss {
-    -fx-background-color: black;
+    -fx-background-image: url("/resources/miss.PNG");
     -fx-border-color: #B4B4FF;
     -fx-border-width: 1;
 }
 .hit {
-    -fx-background-color: orange;
+    -fx-background-image: url("/resources/cross.PNG");
+    -fx-background-color: rgba(0, 0, 255, .05);
+
+}
+.destroyed-ship {
+    -fx-border-color: red;
+    -fx-background-image: url("/resources/cross.PNG");
+}
+
+.hit-opponent {
+    -fx-background-image: url("/resources/cross.PNG");
+    -fx-border-color: #B4B4FF;
+    -fx-border-width: 1;
+}
+.hit:hover {
+    -fx-cursor: default;
+}
+.last-try {
+    -fx-background-color: #fafad2;
 }

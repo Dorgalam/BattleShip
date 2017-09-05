@@ -22,7 +22,7 @@ public class YourGridController extends GridBase {
     @FXML
     void populateGrid() {
         super.populateGrid();
-        addShipStyles();
+        addShipsStyles();
     }
 
     @FXML
@@ -37,44 +37,16 @@ public class YourGridController extends GridBase {
         });
     }
 
-    private void addShipStyles() {
-        Ship[] ships = game.getPlayerShips();
-        int x, y, lastIndex;
-        for (Ship ship : ships) {
-            Point[] location = ship.getLocation();
-            lastIndex = location.length - 1;
-            y = location[0].getY();
-            x = location[0].getX();
-            Node cell = gridCell(x + 1,y + 1);
-            if (location.length == 1) {
-                cell.getStyleClass().add("empty-cell");
-            } else {
-                if (location[1].getY() > y) {
-                    cell.getStyleClass().add("ship-missing-bottom");
-                } else {
-                    cell.getStyleClass().add("ship-missing-right");
-                }
-            }
-            for(int i = 1; i < lastIndex; ++i) {
-                y = location[i].getY();
-                x = location[i].getX();
-                cell = gridCell(x + 1,y + 1);
-                if (location[i + 1].getY() > y) {
-                    cell.getStyleClass().add("ship-missing-top-bottom");
-                } else {
-                    cell.getStyleClass().add("ship-missing-left-right");
-                }
-            }
-            y = location[lastIndex].getY();
-            x = location[lastIndex].getX();
-            cell = gridCell(x + 1,y + 1);
-            if (location.length > 1) {
-                if (location[lastIndex - 1].getY() < location[lastIndex].getY()) {
-                    cell.getStyleClass().add("ship-missing-top");
-                } else {
-                    cell.getStyleClass().add("ship-missing-left");
-                }
-            }
+    @Override
+    String getStyleForCell(int i, int j) {
+        Board board = game.getMyBoards(1 - game.getNumOfPlayer())[1];
+        int[][] boardMatrix = board.getMatrix();
+        int cellType = boardMatrix[i - 1][j - 1];
+        return getStyleClass(cellType);
+    }
+    private void addShipsStyles() {
+        for (Ship ship : game.getPlayerShips()) {
+            addShipStyles(ship);
         }
     }
 

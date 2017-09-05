@@ -50,6 +50,7 @@ public class StartGameController {
         );
     }
 
+    final Context inst = Context.getInstance();
     @FXML
     private void handleChooseFileClick(ActionEvent event) {
         JFileChooser chooser = new JFileChooser();
@@ -63,7 +64,7 @@ public class StartGameController {
             File selectedXml = chooser.getSelectedFile();
             chosenFileText.setText(selectedXml.getName());
             try {
-                Context.getInstance().setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
+                inst.setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
                 gameEntered.setSelected(true);
             } catch (Exception e) {
                 errorMessages.setText(e.getMessage());
@@ -73,7 +74,11 @@ public class StartGameController {
     }
     @FXML
     private void handleStartClick() {
-        Context.getInstance().getGameStartedHandler().setSelected(true);
+        String[] names = new String[2];
+        names[0] = playerOneField.getText();
+        names[1] = playerTwoField.getText();
+        inst.getBattleShipGame().setPlayerNames(names);
+        inst.getGameStartedHandler().setSelected(true);
         startGamePane.setVisible(false);
     }
 

@@ -20,6 +20,9 @@ public class GameTabsController {
     @FXML
     Pane yourGrid;
 
+    @FXML
+    Pane gameStats;
+
 
     @FXML
     protected void initialize() {
@@ -39,6 +42,8 @@ public class GameTabsController {
                 return opponentsGrid;
             case "1":
                 return yourGrid;
+            case "2":
+                return gameStats;
             default:
                 return null;
         }
