@@ -109,3 +109,14 @@
     -fx-border-color: red;
     -fx-border-width: 2 3 3 2;
 }
+.mine-hover {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: #40BF44;
+    -fx-border-width: 2 3 3 2;
+}
+
+.mine-cant-place {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: red;
+    -fx-border-width: 2 3 3 2;
+}

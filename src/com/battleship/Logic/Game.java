@@ -28,6 +28,10 @@ public class Game {
         }
     }
 
+    public boolean isValidPlaceForMine(int x, int y) {
+        return players[numOfPlayer].checkMineLoc(new Point(x,y));
+    }
+
     public void setPlayerNames(String[] names) {
         playerNames = names;
     }

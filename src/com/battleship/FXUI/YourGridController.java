@@ -62,11 +62,31 @@ public class YourGridController extends GridBase {
             minePane.setOpacity(0);
         }
     }
+
+
+    @Override
+    Pane createCellItem() {
+        Pane item = super.createCellItem();
+        item.setOnDragEntered(event -> {
+            int x = (int)item.getLayoutX() / 32;
+            int y = (int)item.getLayoutY() /32;
+            if (game.isValidPlaceForMine(x, y)) {
+                item.getStyleClass().add("mine-hover");
+            } else {
+                item.getStyleClass().add("mine-cant-place");
+            }
+        });
+        item.setOnDragExited(event -> {
+            item.getStyleClass().remove("mine-hover");
+            item.getStyleClass().remove("mine-cant-place");
+        });
+        return item;
+    }
+
     @FXML
     protected void initialize() {
         super.initialize();
         this.gridNum = 0;
-        System.out.println(yourGrid.getOpacity());
         yourGrid.opacityProperty().addListener((observable, oldValue, newValue) -> {
             if (oldValue.equals(0.0)) {
                 populateGrid();

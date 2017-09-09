@@ -56,7 +56,6 @@ abstract class GridBase {
             case  Board.MISS:
                 return "miss";
             case Board.HIT:
-                System.out.println(hitStyle);
                 return hitStyle;
             default:
                 return "";
@@ -108,8 +107,7 @@ abstract class GridBase {
         for(int i = 1; i< thisBoard.getSize() + 1; ++i) {
             for(int j = 1; j < thisBoard.getSize() + 1; ++j) {
                 try {
-                    Pane item = new Pane();
-                    item.setMinSize(33,33);
+                    Pane item = createCellItem();
                     item.getStyleClass().add(getStyleForCell(i,j));
                     grid.add(item,i,j);
                 } catch (Exception e) {
@@ -119,6 +117,13 @@ abstract class GridBase {
         }
         moveToCenter();
     }
+
+    Pane createCellItem() {
+        Pane item = new Pane();
+        item.setMinSize(33,33);
+        return item;
+    }
+
     void addShipClassToNode(Node n, String style) {
         if (n.getStyleClass().indexOf("hit") == -1) {
             n.getStyleClass().clear();

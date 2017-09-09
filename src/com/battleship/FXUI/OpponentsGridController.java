@@ -76,11 +76,12 @@ public class OpponentsGridController extends GridBase {
                     break;
                 default:
                     if (game.isGameFinished()) {
-                        Context.getInstance();
+                        textToWrite = "You won!!";
+                    } else {
+                        textToWrite = "Great hit! ship is destroyed, still your turn";
+                        source.getStyleClass().clear();
+                        addDestroyedShipStyles();
                     }
-                    textToWrite = "Great hit! ship is destroyed, still your turn";
-                    source.getStyleClass().clear();
-                    addDestroyedShipStyles();
                     break;
             }
             source.getStyleClass().add(classToAdd);
