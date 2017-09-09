@@ -4,6 +4,8 @@ import com.battleship.Logic.Board;
 import com.battleship.Logic.Game;
 import com.battleship.Logic.Point;
 import com.battleship.Logic.Ship;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,6 +18,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,8 @@ abstract class GridBase {
     int gridNum;
 
     String hitStyle;
+
+    @FXML Text playerMessage;
 
     @FXML
     GridPane grid;
@@ -51,7 +56,6 @@ abstract class GridBase {
             case  Board.MISS:
                 return "miss";
             case Board.HIT:
-                System.out.println(hitStyle);
                 return hitStyle;
             default:
                 return "";
@@ -74,6 +78,10 @@ abstract class GridBase {
         int loc = (32 * boardSize + 50) / 2;
         grid.setLayoutX(windowSize - loc);
         grid.setLayoutY(windowSize - loc);
+        playerMessage.setLayoutY(windowSize / 2 + 9);
+        playerMessage.setTextAlignment(TextAlignment.CENTER);
+        playerMessage.setLayoutX(0);
+        playerMessage.setWrappingWidth(windowSize * 2);
     }
 
     void populateGrid() {
@@ -99,8 +107,7 @@ abstract class GridBase {
         for(int i = 1; i< thisBoard.getSize() + 1; ++i) {
             for(int j = 1; j < thisBoard.getSize() + 1; ++j) {
                 try {
-                    Pane item = new Pane();
-                    item.setMinSize(33,33);
+                    Pane item = createCellItem();
                     item.getStyleClass().add(getStyleForCell(i,j));
                     grid.add(item,i,j);
                 } catch (Exception e) {
@@ -110,11 +117,39 @@ abstract class GridBase {
         }
         moveToCenter();
     }
+
+    Pane createCellItem() {
+        Pane item = new Pane();
+        item.setMinSize(33,33);
+        return item;
+    }
+
     void addShipClassToNode(Node n, String style) {
         if (n.getStyleClass().indexOf("hit") == -1) {
             n.getStyleClass().clear();
         }
         n.getStyleClass().add(style);
+    }
+
+    void displayMessageOverGrid(String textToWrite, int time, boolean shouldPopulate, boolean moveToFirstTab) {
+        grid.setDisable(true);
+        grid.setOpacity(0.2);
+        playerMessage.setText(textToWrite);
+        Timeline timeline = new Timeline(new KeyFrame(
+                Duration.millis(time),
+                ae -> {
+                    playerMessage.setText("");
+                    if (shouldPopulate) {
+                        populateGrid();
+                    }
+                    TransitionEffects.fadeEffect(grid, 0.2, 500).setOnFinished(finished -> {
+                        grid.setDisable(false);
+                    });
+                    if (moveToFirstTab) {
+                        Context.getInstance().getGameTabs().getSelectionModel().selectFirst();
+                    }
+                }));
+        timeline.play();
     }
 
     private String shipClassToAdd(int i, Point[] points) {

@@ -32,6 +32,7 @@ public class GameTabsController {
                 TransitionEffects.fadeEffect(opponentsGrid, null);
             }
         });
+        Context.getInstance().setGameTabs(gameTabs);
         gameTabs.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, tab) -> {
             TransitionEffects.fadeEffect(getNodeFromTab(tab.getId()), getNodeFromTab(oldValue.getId()));
         });

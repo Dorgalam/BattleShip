@@ -58,6 +58,15 @@ public class Player {
         return true;
     }
 
+    boolean checkMineLoc(Point point) {
+        try {
+            return myBoard.isValidPlace(point, Board.EMPTY_CELL);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public Ship[] getMyShips() {
         return myShips;
     }

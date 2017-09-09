@@ -10,8 +10,8 @@ public class Game {
     private int numOfPlayer = 0;
     private String playerNames[];
     private int gameMode;
-    static final int BASIC = 0;
-    static final int ADVANCED = 1;
+    public static final int BASIC = 0;
+    public static final int ADVANCED = 1;
 
     public Game(String xmlPath) throws Exception {
         try {
@@ -26,6 +26,10 @@ public class Game {
         catch (GameException ex){
             throw ex;
         }
+    }
+
+    public boolean isValidPlaceForMine(int x, int y) {
+        return players[numOfPlayer].checkMineLoc(new Point(x,y));
     }
 
     public void setPlayerNames(String[] names) {
