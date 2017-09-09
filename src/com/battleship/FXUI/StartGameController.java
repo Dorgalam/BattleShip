@@ -1,7 +1,6 @@
 package com.battleship.FXUI;
 
 import com.battleship.Logic.Game;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,6 +8,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,27 +50,21 @@ public class StartGameController {
         );
     }
 
-    final Context inst = Context.getInstance();
+    private final Context inst = Context.getInstance();
     @FXML
     private void handleChooseFileClick(ActionEvent event) {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Open your game XML file");
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter(
-                "xml files (*.xml)", "xml");
-        chooser.setFileFilter(xmlfilter);
-        int success = chooser.showOpenDialog(null);
-        if (success == JFileChooser.APPROVE_OPTION) {
-            File selectedXml = chooser.getSelectedFile();
-            chosenFileText.setText(selectedXml.getName());
-            try {
-                inst.setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
-                gameEntered.setSelected(true);
-            } catch (Exception e) {
-                errorMessages.setText(e.getMessage());
-            }
-        }
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("Open your game XML file");
 
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Xml files (*.xml)", "*.xml"));
+        try {
+            File selectedXml = chooser.showOpenDialog(null);
+            chosenFileText.setText(selectedXml.getName());
+            inst.setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
+            gameEntered.setSelected(true);
+        } catch (Exception e) {
+            errorMessages.setText(e.getMessage());
+        }
     }
     @FXML
     private void handleStartClick() {

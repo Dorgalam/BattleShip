@@ -26,6 +26,8 @@ public class SceneController extends Application {
                 double windowSize = Context.getInstance().getWindowSize();
                 stage.close();
                 stage.setScene(new Scene(gameTabs, windowSize , windowSize));
+                String title = (Context.getInstance().getBattleShipGame().getGameMode() == Game.ADVANCED ? "Advanced" : "Basic") + " Battleships";
+                stage.setTitle(title);
                 stage.show();
             });
         } catch (Exception e) {

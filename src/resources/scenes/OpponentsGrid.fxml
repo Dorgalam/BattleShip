@@ -12,7 +12,7 @@
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fx:id="attackOutcome" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="400.0">
+      <Text fx:id="playerMessage" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="400.0">
          <font>
             <Font size="24.0" />
          </font>

@@ -101,3 +101,11 @@
 .last-try {
     -fx-background-color: #fafad2;
 }
+.mine {
+    -fx-background-image: url("/resources/mine_small.png");
+}
+.mine-hit {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: red;
+    -fx-border-width: 2 3 3 2;
+}

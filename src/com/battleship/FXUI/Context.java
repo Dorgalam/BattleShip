@@ -2,12 +2,23 @@ package com.battleship.FXUI;
 
 import com.battleship.Logic.Game;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.TabPane;
 
 public class Context {
 
     private CheckBox gameStartedHandler = new CheckBox();
 
     private double windowSize;
+
+    public TabPane getGameTabs() {
+        return gameTabs;
+    }
+
+    public void setGameTabs(TabPane gameTabs) {
+        this.gameTabs = gameTabs;
+    }
+
+    TabPane gameTabs;
 
     CheckBox getGameStartedHandler() {
         return gameStartedHandler;

@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
+
 <Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
    <children>
+      <Text fx:id="playerName" layoutX="56.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="playerMessage" layoutX="2.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="400.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Pane fx:id="minePane" layoutX="276.0" prefHeight="83.0" prefWidth="142.0">
+         <children>
+            <Text fx:id="mineText" layoutX="11.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag mine to place it" wrappingWidth="120.169921875" />
+            <ImageView fx:id="mineImage" fitHeight="32.0" fitWidth="32.0" layoutX="55.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../mine_small.png" />
+               </image>
+            </ImageView>
+            <Text fx:id="minesLeft" layoutX="45.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="mines left" />
+         </children>
+      </Pane>
       <GridPane fx:id="grid" layoutX="128.0" layoutY="135.0" prefHeight="26.0" prefWidth="16.0">
          <columnConstraints>
             <ColumnConstraints />
@@ -15,10 +38,5 @@
             <RowConstraints />
          </rowConstraints>
       </GridPane>
-      <Text fx:id="playerName" layoutX="56.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
    </children>
 </Pane>

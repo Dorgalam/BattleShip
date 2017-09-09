@@ -21,9 +21,6 @@ public class OpponentsGridController extends GridBase {
     public Pane opponentsGrid;
 
     @FXML
-    Text attackOutcome;
-
-    @FXML
     protected void initialize() {
         super.initialize();
         this.hitStyle = "hit-opponent";
@@ -45,11 +42,7 @@ public class OpponentsGridController extends GridBase {
 
     void moveToCenter() {
         super.moveToCenter();
-        double windowSize = Context.getInstance().getWindowSize();
-        attackOutcome.setLayoutY(windowSize / 2 + 9);
-        attackOutcome.setTextAlignment(TextAlignment.CENTER);
-        attackOutcome.setLayoutX(0);
-        attackOutcome.setWrappingWidth(windowSize);
+
     }
 
     @FXML
@@ -91,21 +84,8 @@ public class OpponentsGridController extends GridBase {
                     break;
             }
             source.getStyleClass().add(classToAdd);
-            grid.setDisable(true);
-            grid.setOpacity(0.2);
-            attackOutcome.setText(textToWrite);
-            Timeline timeline = new Timeline(new KeyFrame(
-                    Duration.millis(result == 1 ? 500 : 2000),
-                    ae -> {
-                        attackOutcome.setText("");
-                        if (result < 1) {
-                            populateGrid();
-                        }
-                        TransitionEffects.fadeEffect(grid, 0.2, 500).setOnFinished(finished -> {
-                            grid.setDisable(false);
-                        });
-                    }));
-            timeline.play();
+            displayMessageOverGrid(textToWrite, result == 1 ? 500 : 1500, result < 1, false);
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
