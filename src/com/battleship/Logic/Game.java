@@ -1,11 +1,17 @@
 package com.battleship.Logic;
 
+import java.util.ArrayList;
+
 public class Game {
     private long startGameTime = 0;
     private Player[] players;
     private long startTurnTime = 0;
     private int boardSize;
     private int numOfPlayer = 0;
+    private String playerNames[];
+    private int gameMode;
+    static final int BASIC = 0;
+    static final int ADVANCED = 1;
 
     public Game(String xmlPath) throws Exception {
         try {
@@ -13,8 +19,7 @@ public class Game {
             this.players = new Player[ 2 ];
             BattleShipParser parser = new BattleShipParser(xmlPath);
             this.boardSize = parser.getBoardSize();
-            if(boardSize<5||boardSize>20)
-                throw new GameException("your board size is "+ boardSize +" that's invalid, need to be between 5 and 20");
+            this.gameMode = parser.getGameType().equals("BASIC") ? BASIC : ADVANCED;
             this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
             this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
         }
@@ -23,18 +28,16 @@ public class Game {
         }
     }
 
-    public Game(String xmlPath, String playerOne, String playerTwo) throws Exception {
-        try {
-            this.startGameTime = java.time.Instant.now().getEpochSecond();
-            this.players = new Player[ 2 ];
-            BattleShipParser parser = new BattleShipParser(xmlPath);
-            this.boardSize = parser.getBoardSize();
-            this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
-            this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
-        }
-        catch (GameException ex){
-            throw ex;
-        }
+    public void setPlayerNames(String[] names) {
+        playerNames = names;
+    }
+
+    public String getPlayerName() {
+        return  playerNames[numOfPlayer];
+    }
+
+    public String getPlayerName(int num) {
+        return  playerNames[num];
     }
 
     public Ship[] getPlayerShips() {
@@ -51,6 +54,10 @@ public class Game {
     public void startTurnClock() {
         startTurnTime = java.time.Instant.now().getEpochSecond();
         players[numOfPlayer].incTurn();
+    }
+
+    public ArrayList<Ship> getDestroyedShips (){
+        return players[1 - numOfPlayer].getDestroyedShips();
     }
 
     public void deleteTurn(){
@@ -84,6 +91,7 @@ public class Game {
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
+
     public void mineHit(int x, int y) {
         Point point = new Point(x,y);
         players[numOfPlayer].incHit(point);
@@ -102,6 +110,10 @@ public class Game {
             return 2; // mines left + is not valid place
         }
         return 0; // there are no mines left
+    }
+
+    public int getNumMines() {
+        return players[numOfPlayer].getNumMines();
     }
 
     public boolean isGameFinished(){
@@ -151,5 +163,9 @@ public class Game {
 
     public int getScore(int numOfPlayer){
         return players[numOfPlayer].getScore();
+    }
+
+    public int getGameMode() {
+        return gameMode;
     }
 }

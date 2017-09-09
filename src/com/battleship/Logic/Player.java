@@ -1,5 +1,7 @@
 package com.battleship.Logic;
 
+import java.util.ArrayList;
+
 public class Player {
     private Board myBoard;
     private Board tryingBoard;
@@ -15,6 +17,20 @@ public class Player {
         this.myBoard = myBoard;
         this.tryingBoard = new Board(myBoard.getSize());
         this.myShips = myShips;
+    }
+
+    public ArrayList<Ship> getDestroyedShips() {
+        ArrayList<Ship> destroyed = new ArrayList<>();
+        for (Ship myShip : myShips) {
+            if(myShip.getCount() == 0) {
+                destroyed.add(myShip);
+            }
+        }
+        return destroyed;
+    }
+
+    int getNumMines() {
+        return minesLeft;
     }
 
     Player(int boardSize, Ship[] myShips) throws GameException{

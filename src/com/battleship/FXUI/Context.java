@@ -7,6 +7,8 @@ public class Context {
 
     private CheckBox gameStartedHandler = new CheckBox();
 
+    private double windowSize;
+
     CheckBox getGameStartedHandler() {
         return gameStartedHandler;
     }
@@ -15,6 +17,8 @@ public class Context {
 
     void setBattleShipGame(Game battleShipGame) {
         BattleShipGame = battleShipGame;
+        int boardSize = battleShipGame.getBoardSize();
+        windowSize = boardSize  < 9 ? 400 : boardSize * 32 * 1.5;
     }
 
     Game getBattleShipGame() {
@@ -33,5 +37,9 @@ public class Context {
     }
 
     private Context() {
+    }
+
+    public double getWindowSize() {
+        return windowSize;
     }
 }

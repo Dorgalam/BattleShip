@@ -6,19 +6,14 @@ import com.battleship.Logic.Point;
 import com.battleship.Logic.Ship;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+
 
 public class OpponentsGridController extends GridBase {
 
@@ -31,6 +26,7 @@ public class OpponentsGridController extends GridBase {
     @FXML
     protected void initialize() {
         super.initialize();
+        this.hitStyle = "hit-opponent";
         this.gridNum = 1;
         opponentsGrid.opacityProperty().addListener((observable, oldValue, newValue) -> {
             if(oldValue.equals(0.0)) {
@@ -40,6 +36,21 @@ public class OpponentsGridController extends GridBase {
     }
 
 
+
+    @Override
+    void populateGrid() {
+        super.populateGrid();
+        addDestroyedShipStyles();
+    }
+
+    void moveToCenter() {
+        super.moveToCenter();
+        double windowSize = Context.getInstance().getWindowSize();
+        attackOutcome.setLayoutY(windowSize / 2 + 9);
+        attackOutcome.setTextAlignment(TextAlignment.CENTER);
+        attackOutcome.setLayoutX(0);
+        attackOutcome.setWrappingWidth(windowSize);
+    }
 
     @FXML
     void handleGridClick(MouseEvent e) {
@@ -55,21 +66,28 @@ public class OpponentsGridController extends GridBase {
             switch (result) {
                 case 1:
                     textToWrite = "Hit! still your turn";
-                    classToAdd = "hit";
+                    source.getStyleClass().clear();
+                    classToAdd = "hit-opponent";
                     break;
                 case 0:
                     textToWrite = "Miss.. switching players";
+                    source.getStyleClass().clear();
                     classToAdd = "miss";
                     break;
                 case -1:
-                    textToWrite = "";
-                    break;
+                    return;
                 case -2:
                     textToWrite = "Mine hit!! your cell took damage";
+                    source.getStyleClass().clear();
                     classToAdd = "mine-hit";
                     break;
                 default:
+                    if (game.isGameFinished()) {
+                        Context.getInstance();
+                    }
                     textToWrite = "Great hit! ship is destroyed, still your turn";
+                    source.getStyleClass().clear();
+                    addDestroyedShipStyles();
                     break;
             }
             source.getStyleClass().add(classToAdd);
@@ -77,7 +95,7 @@ public class OpponentsGridController extends GridBase {
             grid.setOpacity(0.2);
             attackOutcome.setText(textToWrite);
             Timeline timeline = new Timeline(new KeyFrame(
-                    Duration.millis(result > 1 ? 500 : 2000),
+                    Duration.millis(result == 1 ? 500 : 2000),
                     ae -> {
                         attackOutcome.setText("");
                         if (result < 1) {
@@ -91,5 +109,8 @@ public class OpponentsGridController extends GridBase {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+    void addDestroyedShipStyles() {
+        game.getDestroyedShips().forEach(this::addShipStyles);
     }
 }

@@ -5,9 +5,19 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<Pane fx:id="opponentsGrid" minHeight="700.0" minWidth="700.0" opacity="0.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.OpponentsGridController">
+<Pane fx:id="opponentsGrid" minHeight="400.0" minWidth="400.0" opacity="0.0" prefHeight="191.0" prefWidth="235.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.OpponentsGridController">
    <children>
-      <GridPane fx:id="grid" layoutX="128.0" layoutY="135.0" onMouseClicked="#handleGridClick" prefHeight="26.0" prefWidth="16.0">
+      <Text fx:id="playerName" layoutX="55.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="attackOutcome" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="400.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <GridPane fx:id="grid" onMouseClicked="#handleGridClick" prefHeight="1.0" prefWidth="1.0">
          <columnConstraints>
             <ColumnConstraints />
          </columnConstraints>
@@ -15,15 +25,5 @@
             <RowConstraints />
          </rowConstraints>
       </GridPane>
-      <Text fx:id="playerName" layoutX="125.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
-      <Text fx:id="attackOutcome" layoutX="332.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Text>
    </children>
 </Pane>

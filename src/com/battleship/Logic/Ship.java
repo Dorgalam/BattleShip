@@ -39,7 +39,7 @@ public class Ship {
 
     public int getScore() { return score; }
 
-    int getCount() {
+    public int getCount() {
         return count;
     }
 
