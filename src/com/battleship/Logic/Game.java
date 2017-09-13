@@ -102,11 +102,10 @@ public class Game {
 
 
     public void mineHit(int x, int y) {
-        Point point = new Point(x,y);
-        players[1 - numOfPlayer].incHit(point);
-        players[1 - numOfPlayer].checkHit(point);
+        int temp = numOfPlayer;
         numOfPlayer = 1 - numOfPlayer;
-
+        makeTurn(x,y);
+        numOfPlayer = 1 - temp;
     }
 
     public int putMine(int x, int y) {
