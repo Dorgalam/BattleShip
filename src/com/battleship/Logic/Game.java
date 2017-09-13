@@ -29,7 +29,7 @@ public class Game {
     }
 
     public boolean isValidPlaceForMine(int x, int y) {
-        return players[numOfPlayer].checkMineLoc(new Point(x,y));
+        return players[numOfPlayer].checkMineLoc(new Point(x,y)) && players[1 - numOfPlayer].getTryingBoard().getSquare(x,y) != Board.MISS;
     }
 
     public void setPlayerNames(String[] names) {
@@ -78,7 +78,7 @@ public class Game {
         Point p = new Point(x,y);
         int res;
         if (players[numOfPlayer].isAlreadyChecked(p)) {
-            if(players[1-numOfPlayer].getMyBoard().getSquare(p)!=Board.MINE)
+            if(players[1 - numOfPlayer].getMyBoard().getSquare(p) != Board.MINE)
                 res = -1;
             else {
                 res = -2;
@@ -91,6 +91,11 @@ public class Game {
         } else if (res == 0) {
             players[numOfPlayer].incMiss(p);
             numOfPlayer = 1 - numOfPlayer;
+        } else if (res == -2) {
+            mineHit(x, y);
+        }
+        if (res >= 2) {
+            addScore(res - 2);
         }
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
@@ -98,11 +103,10 @@ public class Game {
 
     public void mineHit(int x, int y) {
         Point point = new Point(x,y);
-        players[numOfPlayer].incHit(point);
-        numOfPlayer = 1- numOfPlayer;
-        int tmp = numOfPlayer;
-        makeTurn(point.getX(),point.getY());
-        numOfPlayer = tmp;
+        players[1 - numOfPlayer].incHit(point);
+        players[1 - numOfPlayer].checkHit(point);
+        numOfPlayer = 1 - numOfPlayer;
+
     }
 
     public int putMine(int x, int y) {
@@ -129,6 +133,9 @@ public class Game {
     }
 
     public int getNumberOfHits(int numOfPlayer){
+        return players[numOfPlayer].getHits();
+    }
+    public int getNumberOfHits(){
         return players[numOfPlayer].getHits();
     }
 
@@ -165,8 +172,14 @@ public class Game {
         return myBoards;
     }
 
+    public int getScore(){
+        return players[numOfPlayer].getScore();
+    }
     public int getScore(int numOfPlayer){
         return players[numOfPlayer].getScore();
+    }
+    void addScore(int score) {
+        players[numOfPlayer].addScore(score);
     }
 
     public int getGameMode() {

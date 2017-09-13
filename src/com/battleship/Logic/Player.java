@@ -19,7 +19,7 @@ public class Player {
         this.myShips = myShips;
     }
 
-    public ArrayList<Ship> getDestroyedShips() {
+    ArrayList<Ship> getDestroyedShips() {
         ArrayList<Ship> destroyed = new ArrayList<>();
         for (Ship myShip : myShips) {
             if(myShip.getCount() == 0) {

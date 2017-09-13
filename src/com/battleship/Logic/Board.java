@@ -5,7 +5,12 @@ public class Board {
     public static final int MINE = -2;
     public static final int HIT = -3;
     public static final int MISS = -4;
-    static final int ROW = 0;
+    public static final int ROW = 0;
+    public static final int COL = 1;
+    public static final int UP_RIGHT = 2;
+    public static final int RIGHT_DOWN = 3;
+    public static final int DOWN_RIGHT = 4;
+    public static final int RIGHT_UP = 5;
     private int[][] matrix;
     private int matrixSize;
 
@@ -28,7 +33,7 @@ public class Board {
     public Board(int size ,Ship[] ships) throws GameException { //my board
         this(size);
         int shipSquares = 0;
-        Point[] pArray = new Point[ships.length];
+        Point[] pArray;
         for (int i = 0; i < ships.length; i++) {
             pArray = ships[i].getLocation();
             for (int j = 0; j < ships[i].getCount(); j++) {

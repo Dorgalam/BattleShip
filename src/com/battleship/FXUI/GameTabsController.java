@@ -1,18 +1,13 @@
 package com.battleship.FXUI;
 
-import javafx.animation.FadeTransition;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 
 public class GameTabsController {
     @FXML
     TabPane gameTabs;
-
 
     @FXML
     Pane opponentsGrid;
@@ -37,6 +32,8 @@ public class GameTabsController {
             TransitionEffects.fadeEffect(getNodeFromTab(tab.getId()), getNodeFromTab(oldValue.getId()));
         });
     }
+
+
     Node getNodeFromTab(String tabId) {
         switch (tabId) {
             case "0":

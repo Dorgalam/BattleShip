@@ -29,7 +29,7 @@ public class Context {
     void setBattleShipGame(Game battleShipGame) {
         BattleShipGame = battleShipGame;
         int boardSize = battleShipGame.getBoardSize();
-        windowSize = boardSize  < 9 ? 400 : boardSize * 32 * 1.5;
+        windowSize = boardSize  < 9 ? 420 : boardSize * 32 * 1.5;
     }
 
     Game getBattleShipGame() {

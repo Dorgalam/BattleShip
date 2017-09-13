@@ -75,6 +75,28 @@
     -fx-border-width: 2 3 3 0;
     -fx-background-color: rgba(0,0,255,.05);
 }
+
+.ship-missing-bottom-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 0 0 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-bottom-left {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 3 0 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-top-left {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 3 3 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-top-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 0 3 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
 .miss {
     -fx-background-image: url("/resources/miss.PNG");
     -fx-border-color: #B4B4FF;
@@ -119,4 +141,8 @@
     -fx-background-image: url("/resources/mine_small.png");
     -fx-border-color: red;
     -fx-border-width: 2 3 3 2;
+}
+.topMenu {
+    -fx-border-width: 0 2 2 0;
+    -fx-border-color: black;
 }

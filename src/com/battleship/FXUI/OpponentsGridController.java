@@ -22,6 +22,7 @@ public class OpponentsGridController extends GridBase {
 
     @FXML
     protected void initialize() {
+
         super.initialize();
         this.hitStyle = "hit-opponent";
         this.gridNum = 1;
@@ -36,6 +37,9 @@ public class OpponentsGridController extends GridBase {
 
     @Override
     void populateGrid() {
+        double size = Context.getInstance().getWindowSize();
+        opponentsGrid.setMinSize(size - 30, size - 30);
+        mineText.setOpacity(0);
         super.populateGrid();
         addDestroyedShipStyles();
     }
@@ -70,7 +74,7 @@ public class OpponentsGridController extends GridBase {
                 case -1:
                     return;
                 case -2:
-                    textToWrite = "Mine hit!! your cell took damage";
+                    textToWrite = "Mine hit!! your cell took damage.. switching players";
                     source.getStyleClass().clear();
                     classToAdd = "mine-hit";
                     break;
@@ -86,6 +90,7 @@ public class OpponentsGridController extends GridBase {
             }
             source.getStyleClass().add(classToAdd);
             displayMessageOverGrid(textToWrite, result == 1 ? 500 : 1500, result < 1, false);
+            updateMenu();
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
