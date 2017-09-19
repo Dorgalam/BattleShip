@@ -3,8 +3,10 @@ package com.battleship.FXUI;
 import com.battleship.Logic.Game;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -66,6 +68,7 @@ public class SceneController extends Application {
         double windowSize = Context.getInstance().getWindowSize();
         stage.getScene().setRoot(gameTabs);
         gameTabs.setVisible(true);
+        instance.setGameTabs((TabPane)gameTabs.lookup("#gameTabs"));
         Context.getInstance().getGameTabsController().gameStarted();
         String title = (Context.getInstance().getBattleShipGame().getGameMode() == Game.ADVANCED ? "Advanced" : "Basic") + " Battleships";
         stage.setTitle(title);

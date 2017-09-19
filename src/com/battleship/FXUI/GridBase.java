@@ -139,7 +139,7 @@ abstract class GridBase {
         double windowSize = instance.getWindowSize() / 2;
         int loc = (32 * boardSize + 50) / 2;
         grid.setLayoutX(windowSize - loc);
-        grid.setLayoutY(windowSize - loc + (rewindMode ? 30 : 0));
+        grid.setLayoutY(windowSize - loc + (rewindMode ? 70 : 30));
         playerMessage.setLayoutY(windowSize / 2 + 9);
         playerMessage.setTextAlignment(TextAlignment.CENTER);
         playerMessage.setLayoutX(0);
@@ -237,7 +237,9 @@ abstract class GridBase {
                 ae -> {
                     playerMessage.setText("");
                     if (moveToFirstTab) {
+                        System.out.println(instance.getGameTabs().getSelectionModel().getSelectedIndex());
                         instance.getGameTabs().getSelectionModel().selectFirst();
+                        System.out.println(instance.getGameTabs().getSelectionModel().getSelectedIndex());
                     }
                     if (shouldPopulate) {
                         populateGrid();

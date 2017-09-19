@@ -21,7 +21,6 @@ public class GameEndedController {
 
     @FXML
     protected void initialize() {
-        System.out.println(instance.getWinningPlayerName());
         winningPlayer.setText(instance.getWinningPlayerName());
         playerOne.setText(battleships.getPlayerName(0));
         playerTwo.setText(battleships.getPlayerName(1));

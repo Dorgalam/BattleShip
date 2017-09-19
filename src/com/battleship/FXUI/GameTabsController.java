@@ -22,7 +22,6 @@ public class GameTabsController {
 
     @FXML
     protected void initialize() {
-        instance.setGameTabs(gameTabs);
         instance.setGameTabsController(this);
         instance.getGameStartedHandler().selectedProperty().addListener((observable, oldValue, started) -> {
             if(started) {
