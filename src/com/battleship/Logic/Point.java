@@ -8,6 +8,11 @@ public class Point {
         this.y = y;
     }
 
+    public Point(Point toClone) {
+        this.x = toClone.x;
+        this.y = toClone.y;
+    }
+
     public int getX() {
         return x;
     }

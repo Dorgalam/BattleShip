@@ -93,22 +93,24 @@ public class YourGridController extends GridBase {
             y /= 32;
             int time = 0;
             String textToWrite = "";
-            switch (game.putMine(x, y)) {
-                case 1:
-                    target.getStyleClass().add("mine");
-                    textToWrite = "Mine placed! switching players..";
-                    time = 1500;
-                    break;
-                case 2:
-                    textToWrite = "Wrong mine placement, can't be near a ship";
-                    time = 500;
-                    break;
-                case 0:
-                    System.out.println("no mines left (won't be possible)");
-                    break;
+            if (game.isValidPlaceForMine(x, y)) {
+                switch (game.putMine(x, y)) {
+                    case 1:
+                        target.getStyleClass().add("mine");
+                        textToWrite = "Mine placed! switching players..";
+                        time = 1500;
+                        break;
+                    case 2:
+                        textToWrite = "Wrong mine placement, can't be near a ship";
+                        time = 500;
+                        break;
+                    case 0:
+                        System.out.println("no mines left (won't be possible)");
+                        break;
+                }
+                updateMenu();
+                displayMessageOverGrid(textToWrite, time, time == 1500,time == 1500);
             }
-            updateMenu();
-            displayMessageOverGrid(textToWrite, time, time == 1500,time == 1500);
             event.consume();
         });
         mineImage.setOnDragDetected(event -> {

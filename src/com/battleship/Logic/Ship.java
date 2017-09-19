@@ -8,6 +8,12 @@ public class Ship {
     private int dir;
     private Point[] loc;
 
+    public Ship(Ship toClone) {
+        this.count = toClone.count;
+        this.score = toClone.score;
+        this.dir = toClone.dir;
+        this.loc = toClone.loc.clone();
+    }
 
     public int getDir() {
         return dir;

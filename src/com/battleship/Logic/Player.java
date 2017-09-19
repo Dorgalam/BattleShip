@@ -10,13 +10,30 @@ public class Player {
     private int hits = 0;
     private int misses = 0;
     private double avgTimeOfTurn = 0;
-    private int minesLeft = 2;
+    private int minesLeft;
     private int score = 0;
 
-    public Player(Board myBoard, Ship[] myShip) {
+    public Player(Board myBoard, Ship[] myShip, BattleShipParser parser) {
         this.myBoard = myBoard;
         this.tryingBoard = new Board(myBoard.getSize());
         this.myShips = myShips;
+
+    }
+
+    public Player(Player toClone) {
+        this.myBoard = new Board(toClone.myBoard);
+        this.tryingBoard = new Board(toClone.tryingBoard);
+        int myShipsLength = toClone.myShips.length;
+        this.myShips = new Ship[myShipsLength];
+        for (int i = 0; i < myShipsLength; ++i) {
+            this.myShips[i] = new Ship(toClone.myShips[i]);
+        }
+        this.numberOfTurns = toClone.numberOfTurns;
+        this.hits = toClone.hits;
+        this.misses = toClone.misses;
+        this.avgTimeOfTurn = toClone.avgTimeOfTurn;
+        this.minesLeft = toClone.minesLeft;
+        this.score = toClone.score;
     }
 
     ArrayList<Ship> getDestroyedShips() {
@@ -33,11 +50,14 @@ public class Player {
         return minesLeft;
     }
 
-    Player(int boardSize, Ship[] myShips) throws GameException{
+    Player(int boardSize, Ship[] myShips, BattleShipParser parser) throws GameException{
         try {
             this.myBoard = new Board(boardSize, myShips);
             this.tryingBoard = new Board(boardSize);
             this.myShips = myShips;
+            if (parser.getGameType().equals("ADVANCE")) {
+                minesLeft = parser.getNumMines();
+            }
         } catch (Exception e) {
             GameException ex = new GameException();
             ex.setMsg("Board details in this xml are invalid, please try another XML");

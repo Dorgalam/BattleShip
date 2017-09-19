@@ -18,7 +18,6 @@ public class GameTabsController {
     @FXML
     Pane gameStats;
 
-
     @FXML
     protected void initialize() {
         Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, started) -> {

@@ -52,10 +52,10 @@ public class OpponentsGridController extends GridBase {
     @FXML
     void handleGridClick(MouseEvent e) {
         try {
-            if (grid.getStyleClass().indexOf("turn-made") > -1) {
+            Node source = (Node)e.getTarget() ;
+            if (source.getStyleClass().indexOf("empty-cell") == -1) {
                 return;
             }
-            Node source = (Node)e.getTarget() ;
             int colIndex = GridPane.getColumnIndex(source);
             int rowIndex = GridPane.getRowIndex(source);
             final int result = game.makeTurn(colIndex - 1, rowIndex - 1);
@@ -81,6 +81,8 @@ public class OpponentsGridController extends GridBase {
                 default:
                     if (game.isGameFinished()) {
                         textToWrite = "You won!!";
+                        Context.getInstance().setWinningPlayerName(game.getPlayerName());
+                        Context.getInstance().getGameStartedHandler().setSelected(false);
                     } else {
                         textToWrite = "Great hit! ship is destroyed, still your turn";
                         source.getStyleClass().clear();

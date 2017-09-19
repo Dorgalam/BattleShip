@@ -6,19 +6,36 @@ import javafx.scene.control.TabPane;
 
 public class Context {
 
+    private  String winningPlayerName;
+
     private CheckBox gameStartedHandler = new CheckBox();
+
+    private CheckBox showNewGameDialog = new CheckBox();
+
+    private boolean rewindMode = false;
+
+    private String turnOutcome;
+
+    public void setTurnOutcome(String turnOutcome) {
+        this.turnOutcome = turnOutcome;
+    }
+
+    public String getTurnOutcome() {
+        return turnOutcome;
+    }
 
     private double windowSize;
 
-    public TabPane getGameTabs() {
+    TabPane getGameTabs() {
         return gameTabs;
     }
 
-    public void setGameTabs(TabPane gameTabs) {
+    void setGameTabs(TabPane gameTabs) {
         this.gameTabs = gameTabs;
     }
 
-    TabPane gameTabs;
+
+    private TabPane gameTabs;
 
     CheckBox getGameStartedHandler() {
         return gameStartedHandler;
@@ -52,5 +69,29 @@ public class Context {
 
     public double getWindowSize() {
         return windowSize;
+    }
+
+    public String getWinningPlayerName() {
+        return winningPlayerName;
+    }
+
+    public void setWinningPlayerName(String winningPlayerName) {
+        this.winningPlayerName = winningPlayerName;
+    }
+
+    public CheckBox getShowNewGameDialog() {
+        return showNewGameDialog;
+    }
+
+    public void setShowNewGameDialog(CheckBox showNewGameDialog) {
+        this.showNewGameDialog = showNewGameDialog;
+    }
+
+    public boolean isRewindMode() {
+        return rewindMode;
+    }
+
+    public void setRewindMode(boolean rewindMode) {
+        this.rewindMode = rewindMode;
     }
 }
