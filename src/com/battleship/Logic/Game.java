@@ -77,6 +77,10 @@ public class Game {
         return players[numOfPlayer].getMyShips();
     }
 
+    public Ship[] getPlayerShips(int numOfPlayer) {
+        return players[numOfPlayer].getMyShips();
+    }
+
     public Game(Player player1, Player player2) {
         this.startGameTime = java.time.Instant.now().getEpochSecond();
         this.players = new Player[2];

@@ -100,7 +100,9 @@ class BattleShipParser {
                     Utils.typeMap.get(type).getLength(),
                     Utils.getDirectionFromString(direction),
                     x, y,
-                    Utils.typeMap.get(type).getScore());
+                    Utils.typeMap.get(type).getScore(),
+                    type
+                    );
         }
         for (Map.Entry<String, Integer> entry : shipCount.entrySet()) {
             Integer value = entry.getValue();

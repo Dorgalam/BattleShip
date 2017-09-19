@@ -28,6 +28,17 @@ public class Context {
 
     private double windowSize;
 
+    public int getTheme() {
+        return theme;
+    }
+
+    public void setTheme(int theme) {
+        this.theme = theme;
+    }
+
+    private int theme;
+
+
     private String playerNames[];
 
 
