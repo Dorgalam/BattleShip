@@ -31,6 +31,7 @@
       <Text fx:id="timeTwo" layoutX="194.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="timeTwo" textAlignment="CENTER" wrappingWidth="80.0" />
       <Line endX="100.0" layoutX="164.0" layoutY="126.0" startX="-100.0" />
       <Line endX="100.0" layoutX="164.0" layoutY="236.0" startX="-100.0" />
-      <TableView fx:id="shipTable" layoutX="74.0" layoutY="243.0" prefHeight="144.0" prefWidth="210.0" />
+      <TableView fx:id="shipTable" layoutX="59.0" layoutY="257.0" prefHeight="144.0" prefWidth="327.0" />
+      <Text layoutX="63.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ships left for both players:" />
    </children>
 </Pane>

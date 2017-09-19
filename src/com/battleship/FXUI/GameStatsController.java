@@ -37,6 +37,7 @@ public class GameStatsController {
         Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, gameStarted) -> {
             if (gameStarted) {
                 game = Context.getInstance().getBattleShipGame();
+                getStats();
                 fillShipTable();
             }
         });
