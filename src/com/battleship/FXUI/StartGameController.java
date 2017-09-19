@@ -54,7 +54,7 @@ public class StartGameController {
         );
         themeDropdown.getItems().addAll(
                 "Blue/white",
-                "Black/Red",
+                "Black/Purple",
                 "Yellow/Orange"
         );
     }
