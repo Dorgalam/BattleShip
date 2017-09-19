@@ -14,9 +14,9 @@ import javax.xml.validation.Validator;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
-class Utils {
+public class Utils {
     private Utils(){}
-    static Map<String, ShipType> typeMap;
+    public static Map<String, ShipType> typeMap;
     static String getFirstChildText(Element item, String tagName) {
         return item.getElementsByTagName(tagName).item(0).getTextContent();
     }

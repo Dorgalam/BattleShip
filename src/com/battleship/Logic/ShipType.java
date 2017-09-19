@@ -1,6 +1,6 @@
 package com.battleship.Logic;
 
-class ShipType {
+public class ShipType {
     private int length;
     private int score;
     private int amount;

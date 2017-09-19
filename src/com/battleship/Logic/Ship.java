@@ -4,6 +4,7 @@ public class Ship {
     private int count;
     private int score;
 
+    private String type;
 
     private int dir;
     private Point[] loc;
@@ -13,15 +14,17 @@ public class Ship {
         this.score = toClone.score;
         this.dir = toClone.dir;
         this.loc = toClone.loc.clone();
+        this.type = toClone.type;
     }
 
     public int getDir() {
         return dir;
     }
 
-    Ship(int length, int dir, int x, int y, int score) {
+    Ship(int length, int dir, int x, int y, int score, String type) {
         x--;
         y--;
+        this.type = type;
         this.score = score;
         this.count = length;
         this.dir = dir;
@@ -92,6 +95,10 @@ public class Ship {
                 break;
         }
     }
+    public String getType() {
+        return type;
+    }
+
 
     public Point[] getLocation() {
         return loc;
