@@ -30,6 +30,11 @@
 .tab-background {
     -fx-background-color: purple;
 }
+
+.root {
+    -fx-font-family: sans-serif;
+    -fx-font-style: italic;
+}
 .empty-cell {
     -fx-border-color: cyan;
     -fx-border-width: 1;

@@ -58,6 +58,10 @@
     -fx-background-color: rgba(0,0,255,.05);
 }
 
+.root {
+    -fx-font-style: oblique;
+    -fx-font-family: fantasy;
+}
 .ship-missing-left-right {
     -fx-border-color: #00f;
     -fx-border-width: 2 0 3 0;
