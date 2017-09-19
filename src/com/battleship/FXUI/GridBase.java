@@ -9,8 +9,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -24,22 +23,36 @@ import java.util.ArrayList;
 
 abstract class GridBase {
     Game game;
-
     int gridNum;
-
+    private boolean rewindMode = false;
+    private Context instance = Context.getInstance();
     String hitStyle;
 
+    @FXML GridPane grid;
+
+    @FXML Pane rewindButtons;
+    @FXML Button nextButton;
+    @FXML Button prevButton;
+    @FXML Button quitButton;
+    @FXML Button restartButton;
+    @FXML Text turnOutcome;
+
+
+    @FXML Hyperlink quitAction;
+
     @FXML Text playerMessage;
+    @FXML Text playerScore;
+    @FXML Text playerHits;
+    @FXML Text playerMines;
+    @FXML Text minesLeft;
+    @FXML Text mineText;
+    @FXML Text playerName;
+    @FXML Pane minePane;
 
-    @FXML
-    GridPane grid;
-
-    @FXML
-    Text playerName;
-
-    void getGameInstance() {
+    private void getGameInstance() {
         game = Context.getInstance().getBattleShipGame();
     }
+
 
     String getStyleForCell(int i, int j) {
         Board board = game.getMyBoards(game.getNumOfPlayer())[gridNum];
@@ -69,24 +82,76 @@ abstract class GridBase {
                 moveToCenter();
             }
         });
+        quitAction.setOnMouseClicked(event -> {
+            game.updatePlayers();
+            game.updateTurnEndStatus(-3);
+            Context.getInstance().getGameStartedHandler().setSelected(false);
+        });
+        nextButton.setOnMouseClicked(event -> {
+            turnOutcome.setText(game.nextPlayer());
+            populateGrid();
+        });
+        prevButton.setOnMouseClicked(event -> {
+            turnOutcome.setText(game.prevPlayer());
+            populateGrid();
+        });
+        quitButton.setOnMouseClicked(event -> System.exit(0));
+        restartButton.setOnMouseClicked(event -> {
+
+        });
+        grid.getParent().opacityProperty().addListener((observable, oldValue, newValue) -> {
+            if(Context.getInstance().isRewindMode()) {
+                turnOutcome.setText(Context.getInstance().getTurnOutcome());
+            }
+        });
         this.hitStyle = "hit";
     }
+
 
     void moveToCenter() {
         int boardSize = game.getBoardSize();
         double windowSize = Context.getInstance().getWindowSize() / 2;
         int loc = (32 * boardSize + 50) / 2;
         grid.setLayoutX(windowSize - loc);
-        grid.setLayoutY(windowSize - loc);
+        grid.setLayoutY(windowSize - loc + (rewindMode ? 30 : 0));
         playerMessage.setLayoutY(windowSize / 2 + 9);
         playerMessage.setTextAlignment(TextAlignment.CENTER);
         playerMessage.setLayoutX(0);
         playerMessage.setWrappingWidth(windowSize * 2);
+
+    }
+
+    void updateMenu() {
+        playerScore.setText(game.getScore() + "");
+        playerHits.setText(game.getNumberOfHits() + "");
+        if (game.getGameMode() == Game.ADVANCED) {
+            minePane.setDisable(false);
+            minePane.setOpacity(1);
+            int numMines = game.getNumMines();
+            minesLeft.setText(numMines + "");
+            if (numMines == 0) {
+                mineText.setOpacity(0);
+            }
+        }
+    }
+
+    void changeAccordingToRewind() {
+        grid.setDisable(true);
+        rewindButtons.setDisable(false);
+        nextButton.setPickOnBounds(true);
+        rewindButtons.setOpacity(1);
+        minePane.setDisable(true);
+        quitAction.setDisable(true);
+        int playerIterator = game.getPlayerIterator();
+        int turnsListLength = game.getTurnsListLength();
+        nextButton.setDisable(playerIterator >= turnsListLength);
+        prevButton.setDisable(playerIterator == 1);
     }
 
     void populateGrid() {
-        playerName.setText(game.getPlayerName() + "'s turn");
+        playerName.setText(game.getPlayerName());
         grid.getChildren().clear();
+        updateMenu();
         Board thisBoard = game.getMyBoards(game.getNumOfPlayer())[gridNum];
         ColumnConstraints column = new ColumnConstraints(32);
         RowConstraints row = new RowConstraints(32);
@@ -115,6 +180,9 @@ abstract class GridBase {
                 }
             }
         }
+        if (Context.getInstance().isRewindMode()) {
+            changeAccordingToRewind();
+        }
         moveToCenter();
     }
 
@@ -139,46 +207,88 @@ abstract class GridBase {
                 Duration.millis(time),
                 ae -> {
                     playerMessage.setText("");
+                    if (moveToFirstTab) {
+                        instance.getGameTabs().getSelectionModel().selectFirst();
+                    }
                     if (shouldPopulate) {
                         populateGrid();
                     }
                     TransitionEffects.fadeEffect(grid, 0.2, 500).setOnFinished(finished -> {
                         grid.setDisable(false);
                     });
-                    if (moveToFirstTab) {
-                        Context.getInstance().getGameTabs().getSelectionModel().selectFirst();
-                    }
                 }));
         timeline.play();
     }
 
-    private String shipClassToAdd(int i, Point[] points) {
-        int x,lastX,nextX,y,lastY,nextY;
-        x = points[i].getX();
-        y = points[i].getY();
-        if (i == 0) {
-            if (points.length == 1) {
-                return "one-cell";
-            } else {
-                nextY = points[i + 1].getY();
-                return "ship-missing-" + ( nextY > y ? "bottom" : "right");
-            }
+    private String shipClassToAdd(int i, int length, int dir) {
+        switch (dir) {
+            case Board.ROW:
+                if (i == 0) {
+                    return "ship-missing-right";
+                } else if (i == length - 1) {
+                    return "ship-missing-left";
+                } else {
+                    return "ship-missing-left-right";
+                }
+            case Board.COL:
+                if (i == 0) {
+                    return "ship-missing-bottom";
+                } else if (i == length - 1) {
+                    return "ship-missing-top";
+                } else {
+                    return "ship-missing-top-bottom";
+                }
+            case Board.UP_RIGHT:
+                if (i == 0) {
+                    return "ship-missing-top";
+                } else if (i == length / 2) {
+                    return "ship-missing-bottom-right";
+                } else if (i == length - 1) {
+                    return "ship-missing-left";
+                } else if (i < length / 2) {
+                    return "ship-missing-top-bottom";
+                } else {
+                    return "ship-missing-left-right";
+                }
+            case Board.RIGHT_DOWN:
+                if (i == 0) {
+                    return "ship-missing-right";
+                } else if (i == length / 2) {
+                    return "ship-missing-bottom-left";
+                } else if (i == length - 1) {
+                    return "ship-missing-top";
+                } else if (i < length / 2) {
+                    return "ship-missing-left-right";
+                } else {
+                    return "ship-missing-top-bottom";
+                }
+            case Board.DOWN_RIGHT:
+                if (i == 0) {
+                    return "ship-missing-bottom";
+                } else if (i == length / 2) {
+                    return "ship-missing-top-right";
+                } else if (i == length - 1) {
+                    return "ship-missing-left";
+                } else if (i < length / 2) {
+                    return "ship-missing-top-bottom";
+                } else {
+                    return "ship-missing-left-right";
+                }
+            case Board.RIGHT_UP:
+                if (i == 0) {
+                    return "ship-missing-right";
+                } else if (i == length / 2) {
+                    return "ship-missing-top-left";
+                } else if (i == length - 1) {
+                    return "ship-missing-bottom";
+                } else if (i < length / 2) {
+                    return "ship-missing-left-right";
+                } else {
+                    return "ship-missing-top-bottom";
+                }
+            default:
+                return "ship";
         }
-        lastX = points[i - 1].getX();
-        lastY = points[i - 1].getY();
-        if (i == points.length - 1) {
-            return "ship-missing-" + ( lastY < y ? "top" : "left");
-        }
-        nextX = points[i + 1].getX();
-        nextY = points[i + 1].getY();
-        if (nextX != lastX && nextY != lastY) {
-            if (lastX > nextX) {
-                return "some-class";
-            } else {
-                return "some-class";
-            }
-        }
-        return "ship-missing-" + (nextY > y ? "top-bottom" : "left-right");
     }
 
 
@@ -189,7 +299,7 @@ abstract class GridBase {
             int y = location[i].getY();
             int x = location[i].getX();
             Node cell = gridCell(x + 1,y + 1);
-            classToAdd = shipClassToAdd(i, location);
+            classToAdd = shipClassToAdd(i, location.length, ship.getDir());
             addShipClassToNode(cell, classToAdd);
             if (ship.getCount() == 0) {
                 cell.getStyleClass().add("destroyed-ship");

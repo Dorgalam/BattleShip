@@ -1,6 +1,9 @@
 package com.battleship.Logic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
 
 public class Game {
     private long startGameTime = 0;
@@ -9,9 +12,20 @@ public class Game {
     private int boardSize;
     private int numOfPlayer = 0;
     private String playerNames[];
+    private PlayerHistory history = new PlayerHistory();
     private int gameMode;
     public static final int BASIC = 0;
     public static final int ADVANCED = 1;
+
+    private HashMap<Integer, String> turnEndingTable = new HashMap<Integer, String>() {
+        {
+            put(2, "Ship destroyed");
+            put(1, "Hit");
+            put(0, "Miss");
+            put(-2, "Mine placed");
+            put(-3, "Player quit");
+        }
+    };
 
     public Game(String xmlPath) throws Exception {
         try {
@@ -20,16 +34,25 @@ public class Game {
             BattleShipParser parser = new BattleShipParser(xmlPath);
             this.boardSize = parser.getBoardSize();
             this.gameMode = parser.getGameType().equals("BASIC") ? BASIC : ADVANCED;
-            this.players[ 0 ] = new Player(boardSize, parser.getBoardAShips());
-            this.players[ 1 ] = new Player(boardSize, parser.getBoardBShips());
+            this.players[0] = new Player(boardSize, parser.getBoardAShips(), parser);
+            this.players[1] = new Player(boardSize, parser.getBoardBShips(), parser);
         }
         catch (GameException ex){
             throw ex;
         }
     }
 
+    public void updatePlayers() {
+        history.logPlayer(players[numOfPlayer]);
+        history.pushToPlayerSequence(numOfPlayer);
+    }
+
+    public void updateTurnEndStatus(int type) {
+        history.logEnding(turnEndingTable.get(type));
+    }
+
     public boolean isValidPlaceForMine(int x, int y) {
-        return players[numOfPlayer].checkMineLoc(new Point(x,y));
+        return players[numOfPlayer].checkMineLoc(new Point(x,y)) && players[1 - numOfPlayer].getTryingBoard().getSquare(x,y) != Board.MISS;
     }
 
     public void setPlayerNames(String[] names) {
@@ -77,8 +100,9 @@ public class Game {
     {
         Point p = new Point(x,y);
         int res;
+        updatePlayers();
         if (players[numOfPlayer].isAlreadyChecked(p)) {
-            if(players[1-numOfPlayer].getMyBoard().getSquare(p)!=Board.MINE)
+            if(players[1 - numOfPlayer].getMyBoard().getSquare(p) != Board.MINE)
                 res = -1;
             else {
                 res = -2;
@@ -91,24 +115,30 @@ public class Game {
         } else if (res == 0) {
             players[numOfPlayer].incMiss(p);
             numOfPlayer = 1 - numOfPlayer;
+        } else if (res == -2) {
+            mineHit(x, y);
         }
+        if (res >= 2) {
+            addScore(res - 2);
+        }
+        updateTurnEndStatus(res);
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
 
     public void mineHit(int x, int y) {
-        Point point = new Point(x,y);
-        players[numOfPlayer].incHit(point);
-        numOfPlayer = 1- numOfPlayer;
-        int tmp = numOfPlayer;
-        makeTurn(point.getX(),point.getY());
-        numOfPlayer = tmp;
+        int temp = numOfPlayer;
+        numOfPlayer = 1 - numOfPlayer;
+        makeTurn(x,y);
+        numOfPlayer = 1 - temp;
     }
 
     public int putMine(int x, int y) {
         if (players[numOfPlayer].isMinesLeft()) {
             if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y))) {
                 numOfPlayer = 1 - numOfPlayer;
+                updatePlayers();
+                updateTurnEndStatus(-2);
                 return 1; // valid place + mine left
             }
             return 2; // mines left + is not valid place
@@ -129,6 +159,9 @@ public class Game {
     }
 
     public int getNumberOfHits(int numOfPlayer){
+        return players[numOfPlayer].getHits();
+    }
+    public int getNumberOfHits(){
         return players[numOfPlayer].getHits();
     }
 
@@ -165,11 +198,89 @@ public class Game {
         return myBoards;
     }
 
+    public void restartCurrentPlayer() {
+        numOfPlayer = 0;
+    }
+
+    public String nextPlayer() {
+        this.numOfPlayer = history.getNextPlayerNum();
+        players[numOfPlayer] = history.getNextPlayer();
+        return history.getTurnEnding();
+    }
+
+    public String prevPlayer() {
+        this.numOfPlayer = history.getPrevPlayerNum();
+        players[numOfPlayer] = history.getPrevPlayer();
+        return history.getTurnEnding();
+    }
+
+    public int getTurnsListLength() {
+        return history.getTurnsListLength();
+    }
+
+    public int getPlayerIterator() {
+        return history.getPlayerIterator();
+    }
+
+    public int getScore(){
+        return players[numOfPlayer].getScore();
+    }
     public int getScore(int numOfPlayer){
         return players[numOfPlayer].getScore();
+    }
+    void addScore(int score) {
+        players[numOfPlayer].addScore(score);
     }
 
     public int getGameMode() {
         return gameMode;
+    }
+
+}
+
+class PlayerHistory {
+    private int playerIterator = 0;
+    private int numIterator = 0;
+    private ArrayList<Player> playerObject = new ArrayList<>();
+    private ArrayList<Integer> playerNumSequence = new ArrayList<>();
+
+    private ArrayList<String> turnEndings = new ArrayList<>();
+
+    int getTurnsListLength() {
+        return playerObject.size();
+    }
+
+    int getPlayerIterator() {
+        return playerIterator;
+    }
+
+    void logEnding(String ending) {
+        turnEndings.add(ending);
+    }
+
+    String getTurnEnding() {
+        return turnEndings.get(playerIterator - 1);
+    }
+
+    void logPlayer(Player player) {
+        playerObject.add(new Player(player));
+    }
+    void pushToPlayerSequence(int num) {
+        playerNumSequence.add(num);
+    }
+    Player getNextPlayer() {
+        return playerObject.get(playerIterator++);
+    }
+    int getNextPlayerNum() {
+        return playerNumSequence.get(numIterator++);
+    }
+    Player getPrevPlayer() {
+        playerIterator -= 2;
+        return playerObject.get(playerIterator++);
+    }
+
+    int getPrevPlayerNum() {
+        numIterator -= 2;
+        return playerNumSequence.get(numIterator++);
     }
 }

@@ -173,7 +173,6 @@ public class ConsoleUI {
                 break;
             case -2:
                 System.out.println("Mine hit!"); // need to do something
-                gameLogic.mineHit(coord[ 0 ] - 1, coord[ 1 ] - 1);
                 break;
             default:
                 System.out.println("Great hit! ship is down, its score is " + (result - 2));

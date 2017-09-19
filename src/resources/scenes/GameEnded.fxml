@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="startGamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.GameEndedController">
+   <children>
+      <ScrollPane prefHeight="400.0" prefWidth="400.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="397.0" prefWidth="398.0">
+               <children>
+                  <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Congratulations" underline="true" wrappingWidth="150.5625">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="newGameButton" layoutX="266.0" layoutY="338.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="@../styles.css" text="New Game">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="winningPlayer" layoutX="158.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" underline="true" wrappingWidth="150.5625">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="rewindButton" layoutX="14.0" layoutY="338.0" mnemonicParsing="false" onAction="#rewindGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="@../styles.css" text="Rewind">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="183.0" fitWidth="392.0" layoutX="3.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../cheering_minions.gif" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="playerOne" layoutX="121.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="playerTwo" layoutX="234.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text fx:id="scoreOne" layoutX="121.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="scoreOne" />
+                  <Text fx:id="scoreTwo" layoutX="234.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                  <Text layoutX="78.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</Pane>

@@ -41,26 +41,11 @@ public class YourGridController extends GridBase {
 
     @FXML
     void populateGrid() {
+        double size = Context.getInstance().getWindowSize();
+        yourGrid.setPrefSize(size, size);
         super.populateGrid();
         addShipsStyles();
-        updateMineText();
-    }
-
-    void updateMineText() {
-        if(game.getGameMode() == Game.ADVANCED) {
-            int numMines = game.getNumMines();
-            if (numMines == 0) {
-                minesLeft.setText("No mines left");
-                mineText.setOpacity(0);
-                minePane.disableProperty().setValue(true);
-
-            } else {
-                minesLeft.setText(numMines + " mines left");
-            }
-        } else {
-            minePane.disableProperty().setValue(true);
-            minePane.setOpacity(0);
-        }
+        updateMenu();
     }
 
 
@@ -97,26 +82,35 @@ public class YourGridController extends GridBase {
         });
         grid.setOnDragDropped(event -> {
             Node target = (Node)event.getTarget();
-            int x = (int)target.getLayoutX() / 32;
-            int y = (int)target.getLayoutY() / 32;
+            int x = (int)target.getLayoutX();
+            int y = (int)target.getLayoutY();
+            System.out.println(x);
+            System.out.println(y);
+            if (x < 13 || y < 16) {
+                return;
+            }
+            x /= 32;
+            y /= 32;
             int time = 0;
             String textToWrite = "";
-            switch (game.putMine(x, y)) {
-                case 1:
-                    target.getStyleClass().add("mine");
-                    textToWrite = "Mine placed! switching players..";
-                    updateMineText();
-                    time = 1500;
-                    break;
-                case 2:
-                    textToWrite = "Wrong mine placement, can't be near a ship";
-                    time = 500;
-                    break;
-                case 0:
-                    System.out.println("no mines left (won't be possible)");
-                    break;
+            if (game.isValidPlaceForMine(x, y)) {
+                switch (game.putMine(x, y)) {
+                    case 1:
+                        target.getStyleClass().add("mine");
+                        textToWrite = "Mine placed! switching players..";
+                        time = 1500;
+                        break;
+                    case 2:
+                        textToWrite = "Wrong mine placement, can't be near a ship";
+                        time = 500;
+                        break;
+                    case 0:
+                        System.out.println("no mines left (won't be possible)");
+                        break;
+                }
+                updateMenu();
+                displayMessageOverGrid(textToWrite, time, time == 1500,time == 1500);
             }
-            displayMessageOverGrid(textToWrite, time, time == 1500,time == 1500);
             event.consume();
         });
         mineImage.setOnDragDetected(event -> {
@@ -132,9 +126,11 @@ public class YourGridController extends GridBase {
 
     @Override
     String getStyleForCell(int i, int j) {
-        Board board = game.getMyBoards(1 - game.getNumOfPlayer())[1];
-        int[][] boardMatrix = board.getMatrix();
-        int cellType = boardMatrix[i - 1][j - 1];
+        int x = i - 1;
+        int y = j - 1;
+        Board opponentsBoard = game.getMyBoards(1 - game.getNumOfPlayer())[1];
+        Board myBoard = game.getMyBoards(game.getNumOfPlayer())[0];
+        int cellType = (myBoard.getSquare(x, y) == Board.MINE ? Board.MINE : opponentsBoard.getSquare(x, y));
         return getStyleClass(cellType);
     }
     private void addShipsStyles() {

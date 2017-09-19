@@ -1,13 +1,28 @@
 package com.battleship.Logic;
 
+import java.util.ArrayList;
+
 public class Board {
     public static final int EMPTY_CELL = -1;
     public static final int MINE = -2;
     public static final int HIT = -3;
     public static final int MISS = -4;
-    static final int ROW = 0;
+    public static final int ROW = 0;
+    public static final int COL = 1;
+    public static final int UP_RIGHT = 2;
+    public static final int RIGHT_DOWN = 3;
+    public static final int DOWN_RIGHT = 4;
+    public static final int RIGHT_UP = 5;
     private int[][] matrix;
     private int matrixSize;
+
+    Board (Board toClone) {
+        this.matrixSize = toClone.matrixSize;
+        this.matrix = new int[matrixSize][matrixSize];
+        for (int i = 0; i < matrixSize; ++i) {
+            this.matrix[i] = toClone.matrix[i].clone();
+        }
+    }
 
     Board(int size) { //empty board - enemy board
         this.matrixSize = size;
@@ -25,10 +40,10 @@ public class Board {
         }
     }
 
-    public Board(int size ,Ship[] ships) throws GameException { //my board
+    public Board(int size , Ship[] ships) throws GameException { //my board
         this(size);
         int shipSquares = 0;
-        Point[] pArray = new Point[ships.length];
+        Point[] pArray;
         for (int i = 0; i < ships.length; i++) {
             pArray = ships[i].getLocation();
             for (int j = 0; j < ships[i].getCount(); j++) {
@@ -59,10 +74,8 @@ public class Board {
     }
 
     public boolean isHit(Point p) {
-        if (matrix[ p.getX() ][ p.getY() ] >= 0 || matrix[ p.getX() ][ p.getY() ] == MINE) {
-            return true;
-        }
-        return false;
+        Boolean res = (matrix[ p.getX() ][ p.getY() ] >= 0 || matrix[ p.getX() ][ p.getY() ] == MINE);
+        return res;
     }
 
     public int getSquare(Point p) {
@@ -118,7 +131,7 @@ public class Board {
     }
 
     public void addMine(Point p) {
-        matrix[p.getX()][p.getY()] = MINE;
+        updateTheBoard(p, MINE);
     }
 
     public void updateTheBoard(Point p, int n) {
@@ -126,9 +139,7 @@ public class Board {
     }
 
     public boolean alreadyChecked(Point p) {
-        if(matrix[p.getX()][p.getY()] == MISS || matrix[p.getX()][p.getY()] == HIT)
-            return true;
-        return false;
+        return matrix[p.getX()][p.getY()] == MISS || matrix[p.getX()][p.getY()] == HIT;
     }
 
     public int[][] getMatrix() {

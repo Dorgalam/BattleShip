@@ -29,6 +29,14 @@ class Utils {
                 return 0;
             case "COLUMN":
                 return 1;
+            case "UP_RIGHT":
+                return 2;
+            case "RIGHT_DOWN":
+                return 3;
+            case "DOWN_RIGHT":
+                return 4;
+            case "RIGHT_UP":
+                return 5;
             default:
                 return -1;
         }

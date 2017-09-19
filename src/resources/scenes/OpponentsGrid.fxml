@@ -1,22 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <Pane fx:id="opponentsGrid" minHeight="400.0" minWidth="400.0" opacity="0.0" prefHeight="191.0" prefWidth="235.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.OpponentsGridController">
    <children>
-      <Text fx:id="playerName" layoutX="55.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="291.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Text>
       <Text fx:id="playerMessage" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="400.0">
          <font>
             <Font size="24.0" />
          </font>
       </Text>
+      <Pane prefHeight="70.0" prefWidth="400.0" styleClass="topMenu">
+         <children>
+            <Text layoutX="14.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Playing:" underline="true" wrappingWidth="56.904296875">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="92.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:" underline="true" wrappingWidth="56.904296875">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="162.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hits:" underline="true" wrappingWidth="38.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Hyperlink fx:id="quitAction" layoutX="355.0" layoutY="3.0" text="Quit" />
+            <Text fx:id="playerName" layoutX="14.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="playerScore" layoutX="92.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="playerHits" layoutX="162.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="65.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Pane fx:id="minePane" layoutX="200.0" prefHeight="70.0" prefWidth="142.0">
+               <children>
+                  <Text layoutX="31.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mines left:" underline="true" wrappingWidth="80.169921875">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="mineImage" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../mine_small.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="minesLeft" layoutX="111.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="16.0" />
+                  <Text fx:id="mineText" layoutX="46.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Drag to place it" />
+               </children>
+            </Pane>
+         </children>
+      </Pane>
       <GridPane fx:id="grid" onMouseClicked="#handleGridClick" prefHeight="1.0" prefWidth="1.0">
          <columnConstraints>
             <ColumnConstraints />
@@ -25,5 +74,15 @@
             <RowConstraints />
          </rowConstraints>
       </GridPane>
+      <Pane fx:id="rewindButtons" disable="true" layoutY="63.0" opacity="0.0" prefHeight="52.0" prefWidth="263.0">
+         <children>
+            <Button fx:id="nextButton" layoutX="207.0" layoutY="26.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="57.0" styleClass="cta" text="Next" />
+            <Button fx:id="prevButton" layoutY="26.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="53.0" styleClass="cta" text="Prev" />
+            <Button fx:id="restartButton" layoutX="65.0" layoutY="26.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" styleClass="cta" text="Restart" />
+            <Button fx:id="quitButton" layoutX="140.0" layoutY="26.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="53.0" styleClass="cta" text="Quit" />
+            <Text layoutX="15.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn ended with:" />
+            <Text fx:id="turnOutcome" layoutX="109.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+         </children>
+      </Pane>
    </children>
 </Pane>

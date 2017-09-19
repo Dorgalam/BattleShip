@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.rmi.CORBA.Util;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +19,8 @@ import javax.xml.validation.Validator;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import static java.lang.System.in;
 
 
 class BattleShipParser {
@@ -41,7 +44,7 @@ class BattleShipParser {
             throw new GameException("Cannot parse XML");
         }
     }
-    private void setShipTypesUtil() {
+    private void setShipTypesUtil() throws GameException {
         NodeList shipTypesList = dom.getElementsByTagName("shipType");
         int numTypes = shipTypesList.getLength();
         Utils.typeMap = new HashMap<>();
@@ -52,6 +55,9 @@ class BattleShipParser {
             int amount = Utils.getFirstChildInt(shipType, "amount");
             int length = Utils.getFirstChildInt(shipType, "length");
             int score = Utils.getFirstChildInt(shipType, "score");
+            if (!getGameType().equals("ADVANCE") &&  (type.equals("RIGHT_UP") || type.equals("UP_RIGHT") || type.equals("RIGHT_DOWN") || type.equals("DOWN_RIGHT"))) {
+                throw new GameException("Game is basic but ships are advanced");
+            }
             Utils.typeMap.put(type, new ShipType(length, score, amount, category));
         }
         Utils.typeMap = Collections.unmodifiableMap(Utils.typeMap);
@@ -65,6 +71,12 @@ class BattleShipParser {
         Element boardB = (Element) dom.getElementsByTagName("board").item(1);
         return getBoardShips(boardB);
     }
+
+    int getNumMines() {
+        Element mines = (Element)dom.getElementsByTagName("mine").item(0);
+        return Utils.getFirstChildInt(mines, "amount");
+    }
+
     private Ship[] getBoardShips(Element board) throws GameException {
         NodeList shipList = board.getElementsByTagName("ship");
         int numShips = shipList.getLength();
