@@ -17,6 +17,7 @@ import javafx.util.Duration;
 
 public class OpponentsGridController extends GridBase {
 
+
     @FXML
     public Pane opponentsGrid;
 
@@ -37,7 +38,7 @@ public class OpponentsGridController extends GridBase {
 
     @Override
     void populateGrid() {
-        double size = Context.getInstance().getWindowSize();
+        double size = instance.getWindowSize();
         opponentsGrid.setMinSize(size - 30, size - 30);
         mineText.setOpacity(0);
         super.populateGrid();
@@ -81,8 +82,8 @@ public class OpponentsGridController extends GridBase {
                 default:
                     if (game.isGameFinished()) {
                         textToWrite = "You won!!";
-                        Context.getInstance().setWinningPlayerName(game.getPlayerName());
-                        Context.getInstance().getGameStartedHandler().setSelected(false);
+                        instance.setWinningPlayerName(game.getPlayerName());
+                        instance.getGameController().gameEnded();
                     } else {
                         textToWrite = "Great hit! ship is destroyed, still your turn";
                         source.getStyleClass().clear();

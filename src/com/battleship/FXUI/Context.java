@@ -16,6 +16,8 @@ public class Context {
 
     private String turnOutcome;
 
+    private String currentXmlPath;
+
     public void setTurnOutcome(String turnOutcome) {
         this.turnOutcome = turnOutcome;
     }
@@ -26,6 +28,28 @@ public class Context {
 
     private double windowSize;
 
+    private String playerNames[];
+
+
+    void setPlayerNames(String names[]) {
+        playerNames = names;
+    }
+
+    String[] getPlayerNames() {
+        return playerNames;
+    }
+
+    public GameTabsController getGameTabsController() {
+        return gameTabsController;
+    }
+
+    public void setGameTabsController(GameTabsController gameTabsController) {
+        this.gameTabsController = gameTabsController;
+    }
+
+    GameTabsController gameTabsController;
+
+
     TabPane getGameTabs() {
         return gameTabs;
     }
@@ -33,6 +57,17 @@ public class Context {
     void setGameTabs(TabPane gameTabs) {
         this.gameTabs = gameTabs;
     }
+
+    public SceneController getGameController() {
+        return gameController;
+    }
+
+    public void setGameController(SceneController gameController) {
+        this.gameController = gameController;
+    }
+
+    SceneController gameController;
+
 
 
     private TabPane gameTabs;
@@ -91,7 +126,17 @@ public class Context {
         return rewindMode;
     }
 
+
+
     public void setRewindMode(boolean rewindMode) {
         this.rewindMode = rewindMode;
+    }
+
+    public String getCurrentXmlPath() {
+        return currentXmlPath;
+    }
+
+    public void setCurrentXmlPath(String currentXmlPath) {
+        this.currentXmlPath = currentXmlPath;
     }
 }

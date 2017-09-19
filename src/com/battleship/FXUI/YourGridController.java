@@ -84,8 +84,6 @@ public class YourGridController extends GridBase {
             Node target = (Node)event.getTarget();
             int x = (int)target.getLayoutX();
             int y = (int)target.getLayoutY();
-            System.out.println(x);
-            System.out.println(y);
             if (x < 13 || y < 16) {
                 return;
             }

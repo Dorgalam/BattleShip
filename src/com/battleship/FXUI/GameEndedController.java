@@ -21,7 +21,6 @@ public class GameEndedController {
 
     @FXML
     protected void initialize() {
-        System.out.println(instance.getWinningPlayerName());
         winningPlayer.setText(instance.getWinningPlayerName());
         playerOne.setText(battleships.getPlayerName(0));
         playerTwo.setText(battleships.getPlayerName(1));
@@ -34,7 +33,11 @@ public class GameEndedController {
         instance.setRewindMode(true);
         battleships.restartCurrentPlayer();
         instance.setTurnOutcome(battleships.nextPlayer());
-        instance.getGameStartedHandler().setSelected(true);
+        try {
+            instance.getGameController().startNewGame();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

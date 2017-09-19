@@ -18,18 +18,24 @@ public class GameTabsController {
     @FXML
     Pane gameStats;
 
+    private Context instance = Context.getInstance();
+
     @FXML
     protected void initialize() {
-        Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, started) -> {
+        instance.setGameTabsController(this);
+        instance.getGameStartedHandler().selectedProperty().addListener((observable, oldValue, started) -> {
             if(started) {
-                gameTabs.setVisible(true);
-                TransitionEffects.fadeEffect(opponentsGrid, null);
+                gameStarted();
             }
         });
-        Context.getInstance().setGameTabs(gameTabs);
         gameTabs.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, tab) -> {
             TransitionEffects.fadeEffect(getNodeFromTab(tab.getId()), getNodeFromTab(oldValue.getId()));
         });
+    }
+
+    void gameStarted() {
+        gameTabs.setVisible(true);
+        TransitionEffects.fadeEffect(opponentsGrid, null);
     }
 
 
