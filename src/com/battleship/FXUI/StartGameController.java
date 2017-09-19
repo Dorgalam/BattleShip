@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -29,6 +30,9 @@ public class StartGameController {
     private Button chooseFileButton;
 
     @FXML
+    ComboBox themeDropdown;
+
+    @FXML
     private Text chosenFileText;
 
     @FXML
@@ -47,6 +51,11 @@ public class StartGameController {
             playerTwoField.textProperty().isEmpty()
             .or(playerOneField.textProperty().isEmpty())
             .or(gameEntered.selectedProperty().not())
+        );
+        themeDropdown.getItems().addAll(
+                "Blue/white",
+                "Black/Red",
+                "Yellow/Orange"
         );
     }
 
@@ -72,6 +81,7 @@ public class StartGameController {
         String[] names = new String[2];
         names[0] = playerOneField.getText();
         names[1] = playerTwoField.getText();
+        Context.getInstance().setTheme(themeDropdown.getSelectionModel().getSelectedIndex());
         inst.getBattleShipGame().setPlayerNames(names);
         inst.getGameStartedHandler().setSelected(true);
         startGamePane.setVisible(false);

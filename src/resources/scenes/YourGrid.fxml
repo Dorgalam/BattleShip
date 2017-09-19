@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
+<Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0" stylesheets="@../theme1.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
    <children>
       <Pane fx:id="rewindOverlay" disable="true" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="400.0" prefWidth="400.0">
          <children>

@@ -78,6 +78,7 @@ abstract class GridBase {
 
     void initialize() {
         rewindMode = false;
+        grid.getParent().getStyleClass().add("tab-background");
         instance.getGameStartedHandler().selectedProperty().addListener((observable, oldValue, gameStarted) -> {
             if (gameStarted) {
                 getGameInstance();

@@ -14,6 +14,13 @@ import javax.swing.*;
 
 public class SceneController extends Application {
 
+    String getThemeUrl(int themeNum) {
+        if (themeNum == 0) {
+            ++themeNum;
+        }
+        return getClass().getResource("/resources/theme" + themeNum + ".css").toExternalForm();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -74,6 +81,8 @@ public class SceneController extends Application {
         stage.setTitle(title);
         stage.setHeight(windowSize);
         stage.setWidth(windowSize);
+        stage.getScene().getStylesheets().clear();
+        stage.getScene().getStylesheets().add(getThemeUrl(instance.getTheme() + 1));
         instance.getGameStartedHandler().setSelected(true);
         gameTabs = FXMLLoader.load(getClass().getResource("/resources/scenes/GameTabs.fxml"));
     }

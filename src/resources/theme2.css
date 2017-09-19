@@ -1,0 +1,152 @@
+.cta {
+    -fx-background-color: #3899ec;
+    -fx-background-radius: 18;
+    -fx-text-fill: white;
+}
+.cta:disabled {
+    -fx-background-color: #cbd3dc;
+}
+.cta:hover {
+    -fx-background-color: #4eb7f5;
+    -fx-cursor: hand;
+}
+.cta:pressed {
+    -fx-background-color: #3899ec;
+}
+
+.textfield {
+    -fx-border-color: #c1e4fe;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+.textfield:hover {
+    -fx-background-color: #D3EDFF;
+}
+.textfield:focused {
+    -fx-background-color: white;
+    -fx-border-color: #3899EC;
+}
+
+.tab-background {
+    -fx-background-color: purple;
+}
+.empty-cell {
+    -fx-border-color: cyan;
+    -fx-border-width: 1;
+    -fx-background-color: black;
+    -fx-start-margin: -1;
+}
+.empty-cell:hover {
+    -fx-border-color: #40BF44;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+}
+.ship-missing-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 0 3 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-bottom {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 3 0 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
+.ship-missing-top-bottom {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 3 0 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
+.ship-missing-left-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 0 3 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
+.one-cell-ship {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 3 3 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-top {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 3 3 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-left {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 3 3 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
+.ship-missing-bottom-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 0 0 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-bottom-left {
+    -fx-border-color: #00f;
+    -fx-border-width: 2 3 0 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-top-left {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 3 3 0;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+.ship-missing-top-right {
+    -fx-border-color: #00f;
+    -fx-border-width: 0 0 3 2;
+    -fx-background-color: rgba(0,0,255,.05);
+}
+
+.miss {
+    -fx-background-image: url("/resources/miss.PNG");
+    -fx-border-color: #B4B4FF;
+    -fx-border-width: 1;
+}
+.hit {
+    -fx-background-image: url("/resources/cross.PNG");
+    -fx-background-color: rgba(0, 0, 255, .05);
+
+}
+.destroyed-ship {
+    -fx-border-color: red;
+    -fx-background-image: url("/resources/cross.PNG");
+}
+
+.hit-opponent {
+    -fx-background-image: url("/resources/cross.PNG");
+    -fx-border-color: #B4B4FF;
+    -fx-border-width: 1;
+}
+.hit:hover {
+    -fx-cursor: default;
+}
+.last-try {
+    -fx-background-color: #fafad2;
+}
+.mine {
+    -fx-background-image: url("/resources/mine_small.png");
+}
+.mine-hit {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: red;
+    -fx-border-width: 2 3 3 2;
+}
+.mine-hover {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: #40BF44;
+    -fx-border-width: 2 3 3 2;
+}
+
+.mine-cant-place {
+    -fx-background-image: url("/resources/mine_small.png");
+    -fx-border-color: red;
+    -fx-border-width: 2 3 3 2;
+}
+.topMenu {
+    -fx-border-width: 0 2 2 0;
+    -fx-border-color: black;
+}
