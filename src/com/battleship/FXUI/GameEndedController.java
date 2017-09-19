@@ -34,7 +34,11 @@ public class GameEndedController {
         instance.setRewindMode(true);
         battleships.restartCurrentPlayer();
         instance.setTurnOutcome(battleships.nextPlayer());
-        instance.getGameStartedHandler().setSelected(true);
+        try {
+            instance.getGameController().startNewGame();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @FXML

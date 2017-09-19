@@ -19,6 +19,7 @@ public class Game {
 
     private HashMap<Integer, String> turnEndingTable = new HashMap<Integer, String>() {
         {
+            put(3, "Game finished");
             put(2, "Ship destroyed");
             put(1, "Hit");
             put(0, "Miss");
@@ -42,8 +43,13 @@ public class Game {
         }
     }
 
+
+    public String[] getPlayerNames() {
+        return playerNames;
+    }
+
     public void updatePlayers() {
-        history.logPlayer(players[numOfPlayer]);
+        history.logPlayer(players);
         history.pushToPlayerSequence(numOfPlayer);
     }
 
@@ -121,7 +127,7 @@ public class Game {
         if (res >= 2) {
             addScore(res - 2);
         }
-        updateTurnEndStatus(res);
+        updateTurnEndStatus(res >= 2 ? 2 : res);
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
 
@@ -151,7 +157,12 @@ public class Game {
     }
 
     public boolean isGameFinished(){
-        return players[1 - numOfPlayer].allShipsDown();
+        boolean finished = players[1 - numOfPlayer].allShipsDown();
+        if (finished) {
+            updatePlayers();
+            updateTurnEndStatus(3);
+        }
+        return finished;
     }
 
     public int getNumOfTurns(){
@@ -204,13 +215,13 @@ public class Game {
 
     public String nextPlayer() {
         this.numOfPlayer = history.getNextPlayerNum();
-        players[numOfPlayer] = history.getNextPlayer();
+        this.players = history.getNextPlayer();
         return history.getTurnEnding();
     }
 
     public String prevPlayer() {
         this.numOfPlayer = history.getPrevPlayerNum();
-        players[numOfPlayer] = history.getPrevPlayer();
+        this.players = history.getPrevPlayer();
         return history.getTurnEnding();
     }
 
@@ -241,7 +252,7 @@ public class Game {
 class PlayerHistory {
     private int playerIterator = 0;
     private int numIterator = 0;
-    private ArrayList<Player> playerObject = new ArrayList<>();
+    private ArrayList<Player[]> playerObject = new ArrayList<>();
     private ArrayList<Integer> playerNumSequence = new ArrayList<>();
 
     private ArrayList<String> turnEndings = new ArrayList<>();
@@ -262,19 +273,22 @@ class PlayerHistory {
         return turnEndings.get(playerIterator - 1);
     }
 
-    void logPlayer(Player player) {
-        playerObject.add(new Player(player));
+    void logPlayer(Player[] player) {
+        Player players[] = new Player[2];
+        players[0] = new Player(player[0]);
+        players[1] = new Player(player[1]);
+        playerObject.add(players);
     }
     void pushToPlayerSequence(int num) {
         playerNumSequence.add(num);
     }
-    Player getNextPlayer() {
+    Player[] getNextPlayer() {
         return playerObject.get(playerIterator++);
     }
     int getNextPlayerNum() {
         return playerNumSequence.get(numIterator++);
     }
-    Player getPrevPlayer() {
+    Player[] getPrevPlayer() {
         playerIterator -= 2;
         return playerObject.get(playerIterator++);
     }

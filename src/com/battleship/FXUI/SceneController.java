@@ -8,70 +8,83 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class SceneController extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
+    Context instance = Context.getInstance();
 
     private Parent gameTabs;
     private Stage stage;
 
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws Exception {
 
-        try {
-            gameTabs = FXMLLoader.load(getClass().getResource("/resources/scenes/GameTabs.fxml"));
-            this.stage = stage;
-            showStartingScreen();
-            Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, newValue) -> {
+        this.stage = stage;
+        gameTabs = FXMLLoader.load(getClass().getResource("/resources/scenes/GameTabs.fxml"));
+        showStartingScreen();
+        Context.getInstance().setGameController(this);
+        Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, shouldStartNew) -> {
+            try {
+                if (shouldStartNew) {
+                    startNewGame();
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+        Context.getInstance().getShowNewGameDialog().selectedProperty().addListener((observable, oldValue, newValue) ->  {
+            if (newValue) {
                 try {
-                    if(newValue) {
-                        startNewGame();
-                    } else {
-                        gameEnded();
-                    }
+                    showStartingScreen();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-            });
-            Context.getInstance().getShowNewGameDialog().selectedProperty().addListener((observable, oldValue, newValue) ->  {
-                if (newValue) {
-                    try {
-                        showStartingScreen();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            });
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            }
+        });
     }
+
 
     void showStartingScreen() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/resources/scenes/Scene.fxml"));
-        Scene scene = new Scene(root, 400, 400);
-        stage.setScene(scene);
+        if (stage.getScene() == null) {
+            stage.setScene(new Scene(root));
+        } else {
+            stage.getScene().setRoot(root);
+        }
+        stage.setHeight(400);
+        stage.setWidth(400);
         stage.show();
     }
 
     void startNewGame() throws Exception {
         double windowSize = Context.getInstance().getWindowSize();
+        stage.getScene().setRoot(gameTabs);
+        gameTabs.setVisible(true);
+        Context.getInstance().getGameTabsController().gameStarted();
         String title = (Context.getInstance().getBattleShipGame().getGameMode() == Game.ADVANCED ? "Advanced" : "Basic") + " Battleships";
         stage.setTitle(title);
-        stage.getScene().setRoot(gameTabs);
         stage.setHeight(windowSize);
         stage.setWidth(windowSize);
-    }
-    void gameEnded() throws Exception {
-        Parent gameEnded = FXMLLoader.load(getClass().getResource("/resources/scenes/GameEnded.fxml"));
+        instance.getGameStartedHandler().setSelected(true);
         gameTabs = FXMLLoader.load(getClass().getResource("/resources/scenes/GameTabs.fxml"));
-        stage.getScene().setRoot(gameEnded);
-        stage.setHeight(500);
-        stage.setWidth(400);
-        stage.setTitle("Game finished!");
+    }
+    void gameEnded(){
+        try {
+            Parent gameEnded = FXMLLoader.load(getClass().getResource("/resources/scenes/GameEnded.fxml"));
+            stage.getScene().setRoot(gameEnded);
+            stage.setHeight(500);
+            stage.setWidth(400);
+            stage.setTitle("Game finished!");
+            instance.getGameStartedHandler().setSelected(false);
+
+        } catch (Exception e ){
+            System.out.println(e.getMessage());
+        }
     }
 }

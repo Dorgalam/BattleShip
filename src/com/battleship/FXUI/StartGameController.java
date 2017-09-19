@@ -60,6 +60,7 @@ public class StartGameController {
         try {
             File selectedXml = chooser.showOpenDialog(null);
             chosenFileText.setText(selectedXml.getName());
+            Context.getInstance().setCurrentXmlPath(selectedXml.getAbsolutePath());
             inst.setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
             gameEntered.setSelected(true);
         } catch (Exception e) {

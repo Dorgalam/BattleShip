@@ -25,7 +25,8 @@ abstract class GridBase {
     Game game;
     int gridNum;
     private boolean rewindMode = false;
-    private Context instance = Context.getInstance();
+    Context instance = Context.getInstance();
+
     String hitStyle;
 
     @FXML GridPane grid;
@@ -50,7 +51,7 @@ abstract class GridBase {
     @FXML Pane minePane;
 
     private void getGameInstance() {
-        game = Context.getInstance().getBattleShipGame();
+        game = instance.getBattleShipGame();
     }
 
 
@@ -76,7 +77,8 @@ abstract class GridBase {
     }
 
     void initialize() {
-        Context.getInstance().getGameStartedHandler().selectedProperty().addListener((observable, oldValue, gameStarted) -> {
+        rewindMode = false;
+        instance.getGameStartedHandler().selectedProperty().addListener((observable, oldValue, gameStarted) -> {
             if (gameStarted) {
                 getGameInstance();
                 moveToCenter();
@@ -85,7 +87,9 @@ abstract class GridBase {
         quitAction.setOnMouseClicked(event -> {
             game.updatePlayers();
             game.updateTurnEndStatus(-3);
-            Context.getInstance().getGameStartedHandler().setSelected(false);
+            instance.getGameStartedHandler().setSelected(false);
+            instance.getGameController().gameEnded();
+
         });
         nextButton.setOnMouseClicked(event -> {
             turnOutcome.setText(game.nextPlayer());
@@ -95,22 +99,44 @@ abstract class GridBase {
             turnOutcome.setText(game.prevPlayer());
             populateGrid();
         });
-        quitButton.setOnMouseClicked(event -> System.exit(0));
+        quitButton.setOnMouseClicked(event -> {
+            try {
+                instance.setRewindMode(false);
+                instance.getGameController().gameEnded();
+                instance.getGameController().showStartingScreen();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
         restartButton.setOnMouseClicked(event -> {
+            try {
+                instance.getGameStartedHandler().setSelected(false);
+                instance.setRewindMode(false);
+                instance.setPlayerNames(game.getPlayerNames());
+                rewindMode = false;
+                Game restartedGame = new Game(instance.getCurrentXmlPath());
+                restartedGame.setPlayerNames(instance.getPlayerNames());
+                instance.setBattleShipGame(restartedGame);
+                instance.getGameController().startNewGame();
 
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         });
         grid.getParent().opacityProperty().addListener((observable, oldValue, newValue) -> {
-            if(Context.getInstance().isRewindMode()) {
-                turnOutcome.setText(Context.getInstance().getTurnOutcome());
+            if(instance.isRewindMode()) {
+                rewindMode = true;
+                turnOutcome.setText(instance.getTurnOutcome());
             }
         });
         this.hitStyle = "hit";
     }
 
 
+
     void moveToCenter() {
         int boardSize = game.getBoardSize();
-        double windowSize = Context.getInstance().getWindowSize() / 2;
+        double windowSize = instance.getWindowSize() / 2;
         int loc = (32 * boardSize + 50) / 2;
         grid.setLayoutX(windowSize - loc);
         grid.setLayoutY(windowSize - loc + (rewindMode ? 30 : 0));
@@ -118,7 +144,6 @@ abstract class GridBase {
         playerMessage.setTextAlignment(TextAlignment.CENTER);
         playerMessage.setLayoutX(0);
         playerMessage.setWrappingWidth(windowSize * 2);
-
     }
 
     void updateMenu() {
@@ -149,7 +174,11 @@ abstract class GridBase {
     }
 
     void populateGrid() {
-        playerName.setText(game.getPlayerName());
+        try {
+            playerName.setText(game.getPlayerName());
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
         grid.getChildren().clear();
         updateMenu();
         Board thisBoard = game.getMyBoards(game.getNumOfPlayer())[gridNum];
@@ -180,7 +209,7 @@ abstract class GridBase {
                 }
             }
         }
-        if (Context.getInstance().isRewindMode()) {
+        if (rewindMode) {
             changeAccordingToRewind();
         }
         moveToCenter();
