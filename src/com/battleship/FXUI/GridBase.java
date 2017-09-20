@@ -82,12 +82,17 @@ abstract class GridBase {
         instance.getGameStartedHandler().selectedProperty().addListener((observable, oldValue, gameStarted) -> {
             if (gameStarted) {
                 getGameInstance();
+                if (game.getGameMode() == Game.BASIC) {
+                    minePane.setDisable(true);
+                    minePane.setOpacity(0);
+                }
                 moveToCenter();
             }
         });
         quitAction.setOnMouseClicked(event -> {
             game.updatePlayers();
             game.updateTurnEndStatus(-3);
+            instance.setWinningPlayerName(game.getPlayerName(1 - game.getNumOfPlayer()));
             instance.getGameStartedHandler().setSelected(false);
             instance.getGameController().gameEnded();
 
@@ -116,6 +121,7 @@ abstract class GridBase {
                 instance.setPlayerNames(game.getPlayerNames());
                 rewindMode = false;
                 Game restartedGame = new Game(instance.getCurrentXmlPath());
+                restartedGame.startGame();
                 restartedGame.setPlayerNames(instance.getPlayerNames());
                 instance.setBattleShipGame(restartedGame);
                 instance.getGameController().startNewGame();

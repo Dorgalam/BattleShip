@@ -30,7 +30,6 @@ public class Game {
 
     public Game(String xmlPath) throws Exception {
         try {
-            this.startGameTime = java.time.Instant.now().getEpochSecond();
             this.players = new Player[ 2 ];
             BattleShipParser parser = new BattleShipParser(xmlPath);
             this.boardSize = parser.getBoardSize();
@@ -51,6 +50,11 @@ public class Game {
     public void updatePlayers() {
         history.logPlayer(players);
         history.pushToPlayerSequence(numOfPlayer);
+    }
+
+    public void startGame() {
+        this.startGameTime = java.time.Instant.now().getEpochSecond();
+        this.startTurnClock();
     }
 
     public void updateTurnEndStatus(int type) {
@@ -106,11 +110,17 @@ public class Game {
         players[num].setAvgTimeOfTurn(end-startTurnTime);
     }
 
+    public void endTurnClock(){
+        long end = java.time.Instant.now().getEpochSecond();
+        players[numOfPlayer].setAvgTimeOfTurn(end - startTurnTime);
+    }
+
     public int makeTurn(int x, int y)
     {
         Point p = new Point(x,y);
         int res;
         updatePlayers();
+        int currPlayer = numOfPlayer;
         if (players[numOfPlayer].isAlreadyChecked(p)) {
             if(players[1 - numOfPlayer].getMyBoard().getSquare(p) != Board.MINE)
                 res = -1;
@@ -131,6 +141,10 @@ public class Game {
         if (res >= 2) {
             addScore(res - 2);
         }
+        if (res > -1) {
+            this.endTurnClock(currPlayer);
+            this.startTurnClock();
+        }
         updateTurnEndStatus(res >= 2 ? 2 : res);
         return res; // 2 = ship down ,  1 = HIT , 0 = MISS , -1 = already checked
     }
@@ -146,7 +160,9 @@ public class Game {
     public int putMine(int x, int y) {
         if (players[numOfPlayer].isMinesLeft()) {
             if (players[numOfPlayer].isValidPlaceForMine(new Point(x,y))) {
+                endTurnClock();
                 numOfPlayer = 1 - numOfPlayer;
+                startTurnClock();
                 updatePlayers();
                 updateTurnEndStatus(-2);
                 return 1; // valid place + mine left
