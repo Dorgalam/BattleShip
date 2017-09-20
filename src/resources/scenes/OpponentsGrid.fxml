@@ -57,7 +57,7 @@
                   </Text>
                   <ImageView fx:id="mineImage" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../mine_small.png" />
+                        <Image url="/resources/mine_small.png" />
                      </image>
                   </ImageView>
                   <Text fx:id="minesLeft" layoutX="111.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="16.0" />

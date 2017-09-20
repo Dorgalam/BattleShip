@@ -21,7 +21,7 @@
       </Text>
       <Button fx:id="chooseFileButton" layoutX="15.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleChooseFileClick" prefHeight="23.0" prefWidth="91.0" text="Choose file" />
       <Text fx:id="chosenFileText" layoutX="114.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No file chosen" />
-      <Button fx:id="startGameButton" disable="true" layoutX="103.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleStartClick" prefHeight="45.0" prefWidth="194.0" styleClass="cta" stylesheets="@../theme1.css" text="Start game">
+      <Button fx:id="startGameButton" disable="true" layoutX="103.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleStartClick" prefHeight="45.0" prefWidth="194.0" styleClass="cta" stylesheets="/resources/theme1.css" text="Start game">
          <font>
             <Font size="18.0" />
          </font>

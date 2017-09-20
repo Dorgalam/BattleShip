@@ -6,18 +6,18 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0" stylesheets="@../theme1.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
+<Pane fx:id="yourGrid" minHeight="400.0" minWidth="400.0" opacity="0" stylesheets="/resources/theme1.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.YourGridController">
    <children>
       <Pane fx:id="rewindOverlay" disable="true" layoutX="10.0" layoutY="10.0" opacity="0.0" prefHeight="400.0" prefWidth="400.0">
          <children>
             <ImageView fx:id="nextArrow" fitHeight="150.0" fitWidth="120.0" layoutX="280.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../right arrow.png" />
+                  <Image url="/resources/right arrow.png" />
                </image>
             </ImageView>
             <ImageView fx:id="prevArrow" fitHeight="150.0" fitWidth="120.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../left arrow.png" />
+                  <Image url="/resources/left arrow.png" />
                </image>
             </ImageView>
          </children>
@@ -69,7 +69,7 @@
                   </Text>
                   <ImageView fx:id="mineImage" fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../mine_small.png" />
+                        <Image url="/resources/mine_small.png" />
                      </image>
                   </ImageView>
                   <Text fx:id="minesLeft" layoutX="111.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="16.0" />

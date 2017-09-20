@@ -19,7 +19,7 @@
                         <Font size="20.0" />
                      </font>
                   </Text>
-                  <Button fx:id="newGameButton" layoutX="266.0" layoutY="338.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="@../theme1.css" text="New Game">
+                  <Button fx:id="newGameButton" layoutX="266.0" layoutY="338.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="/resources/theme1.css" text="New Game">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -29,14 +29,14 @@
                         <Font size="20.0" />
                      </font>
                   </Text>
-                  <Button fx:id="rewindButton" layoutX="14.0" layoutY="338.0" mnemonicParsing="false" onAction="#rewindGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="@../theme1.css" text="Rewind">
+                  <Button fx:id="rewindButton" layoutX="14.0" layoutY="338.0" mnemonicParsing="false" onAction="#rewindGame" prefHeight="45.0" prefWidth="118.0" styleClass="cta" stylesheets="/resources/theme1.css" text="Rewind">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
                   <ImageView fitHeight="183.0" fitWidth="392.0" layoutX="3.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../cheering_minions.gif" />
+                        <Image url="/resources/cheering_minions.gif" />
                      </image>
                   </ImageView>
                   <Text fx:id="playerOne" layoutX="121.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />

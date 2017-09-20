@@ -238,9 +238,7 @@ abstract class GridBase {
                 ae -> {
                     playerMessage.setText("");
                     if (moveToFirstTab) {
-                        System.out.println(instance.getGameTabs().getSelectionModel().getSelectedIndex());
                         instance.getGameTabs().getSelectionModel().selectFirst();
-                        System.out.println(instance.getGameTabs().getSelectionModel().getSelectedIndex());
                     }
                     if (shouldPopulate) {
                         populateGrid();
