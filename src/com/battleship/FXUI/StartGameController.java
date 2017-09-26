@@ -54,7 +54,7 @@ public class StartGameController {
         );
         themeDropdown.getItems().addAll(
                 "Blue/white",
-                "Black/Purple",
+                "Green/Aqua",
                 "Yellow/Orange"
         );
     }
@@ -72,6 +72,7 @@ public class StartGameController {
             Context.getInstance().setCurrentXmlPath(selectedXml.getAbsolutePath());
             inst.setBattleShipGame(new Game(selectedXml.getAbsolutePath()));
             gameEntered.setSelected(true);
+            errorMessages.setText("");
         } catch (Exception e) {
             errorMessages.setText(e.getMessage());
         }
@@ -83,6 +84,7 @@ public class StartGameController {
         names[1] = playerTwoField.getText();
         Context.getInstance().setTheme(themeDropdown.getSelectionModel().getSelectedIndex());
         inst.getBattleShipGame().setPlayerNames(names);
+        inst.getBattleShipGame().startGame();
         inst.getGameStartedHandler().setSelected(true);
         startGamePane.setVisible(false);
     }

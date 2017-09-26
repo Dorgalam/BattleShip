@@ -7,43 +7,48 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane fx:id="startGamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.StartGameController">
-   <children>
-      <Text layoutX="15.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Lior &amp; Dor's Battleship game!" underline="true" wrappingWidth="453.5625">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Text>
-      <Text layoutX="15.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter an Xml file with your game.">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Text>
-      <Button fx:id="chooseFileButton" layoutX="15.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleChooseFileClick" prefHeight="23.0" prefWidth="91.0" text="Choose file" />
-      <Text fx:id="chosenFileText" layoutX="114.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No file chosen" />
-      <Button fx:id="startGameButton" disable="true" layoutX="103.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleStartClick" prefHeight="45.0" prefWidth="194.0" styleClass="cta" stylesheets="/resources/theme1.css" text="Start game">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Text fx:id="errorMessages" fill="RED" layoutX="262.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="105.94921875" />
-      <Text layoutX="15.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are the player names?" underline="true" wrappingWidth="453.5625">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-      <Text layoutX="18.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Text>
-      <Text layoutX="18.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Text>
-      <TextField fx:id="playerOneField" layoutX="80.0" layoutY="200.0" maxHeight="400.0" maxWidth="400.0" styleClass="textfield" />
-      <TextField fx:id="playerTwoField" layoutX="80.0" layoutY="246.0" styleClass="textfield" />
-      <ComboBox fx:id="themeDropdown" layoutX="280.0" layoutY="222.0" prefHeight="25.0" prefWidth="106.0" promptText="Theme" />
-   </children>
-</Pane>
+
+<ScrollPane prefHeight="428.0" prefWidth="422.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship.FXUI.StartGameController">
+   <content>
+      <Pane fx:id="startGamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="419.0">
+         <children>
+            <Text layoutX="12.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to Lior &amp; Dor's Battleship game!" underline="true" wrappingWidth="395.5625">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="15.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter an Xml file with your game.">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Button fx:id="chooseFileButton" layoutX="15.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleChooseFileClick" prefHeight="23.0" prefWidth="91.0" text="Choose file" />
+            <Text fx:id="chosenFileText" layoutX="114.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No file chosen" />
+            <Button fx:id="startGameButton" disable="true" layoutX="103.0" layoutY="305.0" mnemonicParsing="false" onAction="#handleStartClick" prefHeight="45.0" prefWidth="194.0" styleClass="cta" stylesheets="/resources/theme1.css" text="Start game">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            <Text fx:id="errorMessages" fill="RED" layoutX="262.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="105.94921875" />
+            <Text layoutX="15.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What are the player names?" underline="true" wrappingWidth="453.5625">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="18.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="18.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <TextField fx:id="playerOneField" layoutX="80.0" layoutY="200.0" maxHeight="400.0" maxWidth="400.0" styleClass="textfield" />
+            <TextField fx:id="playerTwoField" layoutX="80.0" layoutY="246.0" styleClass="textfield" />
+            <ComboBox fx:id="themeDropdown" layoutX="280.0" layoutY="222.0" prefHeight="25.0" prefWidth="106.0" promptText="Theme" />
+         </children>
+      </Pane>
+   </content>
+</ScrollPane>

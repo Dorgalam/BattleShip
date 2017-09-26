@@ -42,6 +42,7 @@ public class GameEndedController {
 
     @FXML
     void startNewGame() {
+        instance.getShowNewGameDialog().setSelected(false);
         instance.getShowNewGameDialog().setSelected(true);
     }
 

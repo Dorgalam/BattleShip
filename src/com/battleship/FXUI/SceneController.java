@@ -66,8 +66,8 @@ public class SceneController extends Application {
         } else {
             stage.getScene().setRoot(root);
         }
-        stage.setHeight(400);
-        stage.setWidth(400);
+        stage.setHeight(470);
+        stage.setWidth(450);
         stage.show();
     }
 
@@ -90,8 +90,8 @@ public class SceneController extends Application {
         try {
             Parent gameEnded = FXMLLoader.load(getClass().getResource("/resources/scenes/GameEnded.fxml"));
             stage.getScene().setRoot(gameEnded);
-            stage.setHeight(500);
-            stage.setWidth(400);
+            stage.setHeight(450);
+            stage.setWidth(430);
             stage.setTitle("Game finished!");
             instance.getGameStartedHandler().setSelected(false);
 

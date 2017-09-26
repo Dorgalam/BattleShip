@@ -15,6 +15,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class GameStatsController {
     @FXML Text playerOne;
     @FXML Text playerTwo;
@@ -50,6 +53,8 @@ public class GameStatsController {
         });
     }
     private void getStats() {
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.CEILING);
         long [] time =  game.GetTimePass();
         turns.setText(game.getNumOfTurns() + "");
         timePassed.setText(time[0] + ":" + time[1]);
@@ -59,8 +64,8 @@ public class GameStatsController {
         scoreTwo.setText(String.valueOf(game.getScore(1)));
         missesOne.setText(String.valueOf(game.getNumberOfMisses(0)));
         missesTwo.setText(String.valueOf(game.getNumberOfMisses(1)));
-        timeOne.setText(String.valueOf(game.getAvgTime(0)));
-        timeTwo.setText(String.valueOf(game.getAvgTime(1)));
+        timeOne.setText(df.format(game.getAvgTime(0)));
+        timeTwo.setText(df.format(game.getAvgTime(1)));
     }
 
     void fillShipTable() {
